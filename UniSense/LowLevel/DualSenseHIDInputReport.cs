@@ -110,8 +110,10 @@ namespace UniSense.LowLevel
         // --- Touchpad Input Fields ---
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
-        [InputControl(name = "touchpad", layout = "Touchpad")] // Overall touchpad control
-        [InputControl(name = "touchpad/primaryTouch", layout = "Touch")]
+        // Removed 'layout = "Touchpad"' as it's not a pre-defined layout in Input System
+        [InputControl(name = "touchpad")] // Overall touchpad control group
+        // Removed 'layout = "Touch"' as it's not a pre-defined layout for nested controls
+        [InputControl(name = "touchpad/primaryTouch")]
         [InputControl(name = "touchpad/primaryTouch/x", format = "UINT")]
         [FieldOffset(28)] public uint touchPoint1X;
 
@@ -124,8 +126,8 @@ namespace UniSense.LowLevel
         [InputControl(name = "touchpad/primaryTouch/id", format = "BYTE")]
         [FieldOffset(37)] public byte touchPoint1Id;
 
-        [InputControl(name = "touchpad/secondaryTouch", layout = "Touch")]
-
+        // Removed 'layout = "Touch"' as it's not a pre-defined layout for nested controls
+        [InputControl(name = "touchpad/secondaryTouch")] 
         [InputControl(name = "touchpad/secondaryTouch/x", format = "UINT")]
         [FieldOffset(38)] public uint touchPoint2X;
 
