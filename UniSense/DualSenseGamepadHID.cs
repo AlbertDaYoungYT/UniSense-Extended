@@ -223,7 +223,7 @@ namespace UniSense
     }
 
     [InputControlLayout(displayName = "DSTouchpad")]
-    public class DSTouchpad : Touchpad
+    public class DSTouchpad : Touchscreen
     {
         public Touch primaryTouch { get; protected set; }
         public Touch secondaryTouch { get; protected set; }
