@@ -5,6 +5,27 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace UniSense.LowLevel
 {
+    // Define the custom control layout for the touchpad
+    [InputControlLayout(name = "DualSenseTouchpadControl", commonUsages = new[] { "Touchscreen" })]
+    public class DualSenseTouchpadControl : InputControl
+    {
+        // This class acts as a container. Its purpose is to define the layout
+        // for the 'touchpad' control in DualSenseHIDInputReport.
+        // The actual data mapping for the touch points (x, y, down, id)
+        // is still handled by FieldOffset attributes in DualSenseHIDInputReport.
+
+        public TouchControl primaryTouch { get; protected set; }
+        public TouchControl secondaryTouch { get; protected set; }
+
+        protected override void FinishSetup()
+        {
+            base.FinishSetup();
+            primaryTouch = GetChildControl<TouchControl>("primaryTouch");
+            secondaryTouch = GetChildControl<TouchControl>("secondaryTouch");
+        }
+        
+    }
+
     [StructLayout(LayoutKind.Explicit, Size = 64)]
     internal struct DualSenseHIDInputReport : IInputStateTypeInfo
     {
@@ -111,7 +132,7 @@ namespace UniSense.LowLevel
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
         // Removed 'layout = "Touchpad"' as it's not a pre-defined layout in Input System
-        [InputControl(name = "touchpad")] // Overall touchpad control group
+        [InputControl(name = "touchpad", layout = "DualSenseTouchpadControl")] // Overall touchpad control group
         // Removed 'layout = "Touch"' as it's not a pre-defined layout for nested controls
         [InputControl(name = "touchpad/primaryTouch")]
         [InputControl(name = "touchpad/primaryTouch/x", format = "UINT")]
