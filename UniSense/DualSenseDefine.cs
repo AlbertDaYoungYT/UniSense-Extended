@@ -37,9 +37,9 @@ namespace UniSense
     
     public enum DualSenseTriggerEffectType : byte
     {
-        NoResitance = 0x00,
-        ContinuousResitance = 0x01,
-        SectionResitance = 0x02,
+        NoResistance = 0x00,
+        ContinuousResistance = 0x01,
+        SectionResistance = 0x02,
         ReleaseAll = 0x05, // New
         EffectEx = 0x26,
         Calibrate = 0xFC,
