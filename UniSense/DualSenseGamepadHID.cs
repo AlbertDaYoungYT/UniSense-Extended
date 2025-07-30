@@ -225,13 +225,13 @@ namespace UniSense
     [InputControlLayout(displayName = "DSTouchpad")]
     public class DSTouchpad : Touchscreen
     {
-        public Touch primaryTouch { get; protected set; }
-        public Touch secondaryTouch { get; protected set; }
+        public new TouchControl primaryTouch { get; protected set; }
+        public TouchControl secondaryTouch { get; protected set; }
 
         protected override void FinishSetup()
         {
-            primaryTouch = GetChildControl<Touch>("primaryTouch");
-            secondaryTouch = GetChildControl<Touch>("secondaryTouch");
+            primaryTouch = GetChildControl<TouchControl>("primaryTouch");
+            secondaryTouch = GetChildControl<TouchControl>("secondaryTouch");
             base.FinishSetup();
         }
     }
