@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Layouts;
@@ -8,8 +9,8 @@ using UnityEngine.InputSystem.Utilities;
 namespace UniSense.LowLevel
 {
     // Define the custom control layout for the touchpad
-    [InputControlLayout(name = "DualSenseTouchpadControl", commonUsages = new[] { "Touchscreen" })]
-    public class DualSenseTouchpadControl : InputControl
+    [InputControlLayout(commonUsages = new[] { "Touchscreen" })]
+    public class DualSenseTouchpadControl : InputControl<Vector2>
     {
         // This class acts as a container. Its purpose is to define the layout
         // for the 'touchpad' control in DualSenseHIDInputReport.
@@ -25,7 +26,18 @@ namespace UniSense.LowLevel
             primaryTouch = GetChildControl<TouchControl>("primaryTouch");
             secondaryTouch = GetChildControl<TouchControl>("secondaryTouch");
         }
-        
+
+        public override Vector2 ReadUnprocessedValueFromState(void* statePtr)
+        {
+            if (primaryTouch != null)
+                return primaryTouch.position.ReadValueFromState(statePtr);
+            return default;
+        }
+
+        public override void WriteValueIntoState(Vector2 value, void* statePtr)
+        {
+            // This control is read-only, so we don't need to implement writing.
+        }
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 64)]
