@@ -115,8 +115,8 @@ namespace UniSense.LowLevel
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
         //[InputControl(name = "touchpad", layout = "Touchscreen")]
         [InputControl(name = "touch0", layout = "Vector2", format = "VC2S", displayName = "Touch 0")]
-        [InputControl(name = "touch0/x", format = "SHRT", parameters = "clampMin=0,clampMax=1919")]
-        [InputControl(name = "touch0/y", format = "SHRT", parameters = "clampMin=0,clampMax=1079")]
+        [InputControl(name = "touch0/x", format = "BIT", parameters = "clampMin=0,clampMax=1919")]
+        [InputControl(name = "touch0/y", format = "BIT", parameters = "clampMin=0,clampMax=1079")]
         //[InputControl(name = "touch0/press", offset = 8, layout = "TouchPress", bit = 0)]
         //[InputControl(name = "touch0/touchId", offset = 9, layout = "Integer", format = "BYTE")]
         [FieldOffset(28)] public short touchPoint1X;
@@ -125,8 +125,8 @@ namespace UniSense.LowLevel
         //[FieldOffset(37)] public byte touchPoint1Id;
 
         [InputControl(name = "touch1", layout = "Vector2", format = "VC2S", displayName = "Touch 1")]
-        [InputControl(name = "touch1/x", format = "SHRT", parameters = "clampMin=0,clampMax=1919")]
-        [InputControl(name = "touch1/y", format = "SHRT", parameters = "clampMin=0,clampMax=1079")]
+        [InputControl(name = "touch1/x", format = "BIT", parameters = "clampMin=0,clampMax=1919")]
+        [InputControl(name = "touch1/y", format = "BIT", parameters = "clampMin=0,clampMax=1079")]
         //[InputControl(name = "touch1/press", offset = 8, layout = "TouchPress", bit = 0)]
         //[InputControl(name = "touch1/touchId", offset = 9, layout = "Integer", format = "BYTE")]
         [FieldOffset(38)] public short touchPoint2X;
