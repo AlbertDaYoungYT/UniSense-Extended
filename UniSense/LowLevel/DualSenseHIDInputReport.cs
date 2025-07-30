@@ -10,7 +10,7 @@ namespace UniSense.LowLevel
 {
     // Define the custom control layout for the touchpad
     [InputControlLayout(commonUsages = new[] { "Touchscreen" })]
-    public class DualSenseTouchpadControl : InputControl<Vector2>
+    public unsafe class DualSenseTouchpadControl : InputControl<Vector2>
     {
         // This class acts as a container. Its purpose is to define the layout
         // for the 'touchpad' control in DualSenseHIDInputReport.
