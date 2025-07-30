@@ -16,7 +16,10 @@ namespace UniSense.LowLevel
         // for the 'touchpad' control in DualSenseHIDInputReport.
         // The actual data mapping for the touch points (x, y, down, id)
         // is still handled by FieldOffset attributes in DualSenseHIDInputReport.
-
+        
+        private TouchControl primaryTouch;
+        private TouchControl secondaryTouch;
+        
         protected override void FinishSetup()
         {
             base.FinishSetup();
@@ -26,7 +29,7 @@ namespace UniSense.LowLevel
 
         public override Vector2 ReadUnprocessedValueFromState(void* statePtr)
         {
-            if (GetChildControl<TouchControl>("primaryTouch") is TouchControl primaryTouch)
+            if (primaryTouch != null)
                 return primaryTouch.position.ReadValueFromState(statePtr);
             return default;
         }
