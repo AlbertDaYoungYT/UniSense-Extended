@@ -34,9 +34,9 @@ namespace UniSense.LowLevel
 
         internal enum InternalMicLedState : byte
         {
-            Off = 0x00,
-            On = 0x01,
-            Pulsating = 0x02,
+            OFF = 0x00,
+            ON = 0x01,
+            PULSE = 0x02,
         }
 
         [Flags]
@@ -48,9 +48,9 @@ namespace UniSense.LowLevel
 
         internal enum InternalPlayerLedBrightness : byte
         {
-            High = 0x0,
-            Medium = 0x1,
-            Low = 0x2,
+            LOW = 0x2,
+            MEDIUM = 0x1,
+            HIGH = 0x0,
         }
 
         [FieldOffset(0)] public InputDeviceCommand baseCommand;
@@ -108,14 +108,14 @@ namespace UniSense.LowLevel
             flags2 |= Flags2.MicLed;
             switch (state)
             {
-                case DualSenseMicLedState.Off:
-                    micLedState = InternalMicLedState.Off;
+                case DualSenseMicLedState.OFF:
+                    micLedState = InternalMicLedState.OFF;
                     break;
-                case DualSenseMicLedState.On:
-                    micLedState = InternalMicLedState.On;
+                case DualSenseMicLedState.ON:
+                    micLedState = InternalMicLedState.ON;
                     break;
-                case DualSenseMicLedState.Pulsating:
-                    micLedState = InternalMicLedState.Pulsating;
+                case DualSenseMicLedState.PULSE:
+                    micLedState = InternalMicLedState.PULSE;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -204,14 +204,14 @@ namespace UniSense.LowLevel
             ledPulseOption = 0x02;
             switch (brightness)
             {
-                case PlayerLedBrightness.High:
-                    playerLedBrightness = InternalPlayerLedBrightness.High;
+                case PlayerLedBrightness.HIGH:
+                    playerLedBrightness = InternalPlayerLedBrightness.HIGH;
                     break;
-                case PlayerLedBrightness.Medium:
-                    playerLedBrightness = InternalPlayerLedBrightness.Medium;
+                case PlayerLedBrightness.MEDIUM:
+                    playerLedBrightness = InternalPlayerLedBrightness.MEDIUM;
                     break;
-                case PlayerLedBrightness.Low:
-                    playerLedBrightness = InternalPlayerLedBrightness.Low;
+                case PlayerLedBrightness.LOW:
+                    playerLedBrightness = InternalPlayerLedBrightness.LOW;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(brightness), brightness, null);
