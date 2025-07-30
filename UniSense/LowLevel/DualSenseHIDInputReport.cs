@@ -115,8 +115,8 @@ namespace UniSense.LowLevel
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
         //[InputControl(name = "touchpad", layout = "Touchscreen")]
         [InputControl(name = "touch0", layout = "Touch", displayName = "Touch 0")]
-        [InputControl(name = "touch0/x", offset = 0, layout = "Axis", format = "UINT", parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
-        [InputControl(name = "touch0/y", offset = 4, layout = "Axis", format = "UINT", parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
+        [InputControl(name = "touch0/x", offset = 0, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
+        [InputControl(name = "touch0/y", offset = 4, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
         [InputControl(name = "touch0/press", offset = 8, layout = "TouchPress", bit = 0)]
         [InputControl(name = "touch0/touchId", offset = 9, layout = "Integer", format = "BYTE")]
         [FieldOffset(28)] public uint touchPoint1X;
@@ -126,8 +126,8 @@ namespace UniSense.LowLevel
         [FieldOffset(37)] public byte touchPoint1Id;
 
         [InputControl(name = "touch1", layout = "Touch", displayName = "Touch 1")]
-        [InputControl(name = "touch1/x", offset = 0, layout = "Axis", format = "UINT", parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
-        [InputControl(name = "touch1/y", offset = 4, layout = "Axis", format = "UINT", parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
+        [InputControl(name = "touch1/x", offset = 0, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
+        [InputControl(name = "touch1/y", offset = 4, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
         [InputControl(name = "touch1/press", offset = 8, layout = "TouchPress", bit = 0)]
         [InputControl(name = "touch1/touchId", offset = 9, layout = "Integer", format = "BYTE")]
         [FieldOffset(38)] public uint touchPoint2X;
