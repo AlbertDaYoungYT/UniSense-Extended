@@ -115,23 +115,23 @@ namespace UniSense.LowLevel
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
         //[InputControl(name = "touchpad", layout = "Touchscreen")]
         [InputControl(name = "touch0", layout = "Touch", displayName = "Touch 0")]
-        [InputControl(name = "touch0/x", offset = 0, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
-        [InputControl(name = "touch0/y", offset = 4, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
+        [InputControl(name = "touch0/x", offset = 0, layout = "Axis", format = "SHRT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
+        [InputControl(name = "touch0/y", offset = 4, layout = "Axis", format = "SHRT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
         [InputControl(name = "touch0/press", offset = 8, layout = "TouchPress", bit = 0)]
         [InputControl(name = "touch0/touchId", offset = 9, layout = "Integer", format = "BYTE")]
-        [FieldOffset(28)] public int touchPoint1X;
-        [FieldOffset(32)] public int touchPoint1Y;
+        [FieldOffset(28)] public short touchPoint1X;
+        [FieldOffset(32)] public short touchPoint1Y;
         [FieldOffset(36)] public byte touchPoint1Down; // 0 for up, 1 for down
 
         [FieldOffset(37)] public byte touchPoint1Id;
 
         [InputControl(name = "touch1", layout = "Touch", displayName = "Touch 1")]
-        [InputControl(name = "touch1/x", offset = 0, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
-        [InputControl(name = "touch1/y", offset = 4, layout = "Axis", format = "UINT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
+        [InputControl(name = "touch1/x", offset = 0, layout = "Axis", format = "SHRT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
+        [InputControl(name = "touch1/y", offset = 4, layout = "Axis", format = "SHRT", sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1079")]
         [InputControl(name = "touch1/press", offset = 8, layout = "TouchPress", bit = 0)]
         [InputControl(name = "touch1/touchId", offset = 9, layout = "Integer", format = "BYTE")]
-        [FieldOffset(38)] public int touchPoint2X;
-        [FieldOffset(42)] public int touchPoint2Y;
+        [FieldOffset(38)] public short touchPoint2X;
+        [FieldOffset(42)] public short touchPoint2Y;
         [FieldOffset(46)] public byte touchPoint2Down; // 0 for up, 1 for down
         [FieldOffset(47)] public byte touchPoint2Id;
         // --- End Touchpad Input Fields ---
