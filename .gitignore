@@ -60,3 +60,6 @@ crashlytics-build.properties
 
 # Rider's project files
 .idea
+
+# Reference Folders
+DS5/

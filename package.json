@@ -1,8 +1,8 @@
 {
-  "name": "com.nullkal.unisense",
-  "displayName": "Input System-UniSense",
-  "version": "0.1.0",
-  "unity": "2019.1",
+  "name": "com.ady.unisense-extended",
+  "displayName": "Extended UniSense Plugin",
+  "version": "0.2.0",
+  "unity": "6000.1",
   "description": "This plugin enables Unity apps to use DualSense in Windows OS, the controller for PlayStation 5.",
   "keywords": [
     "Gamepad",
@@ -16,20 +16,13 @@
     "com.unity.inputsystem": "1.0.1"
   },
   "license": "MIT",
-  "homepage": "https://github.com/nullkal/UniSense#readme",
+  "homepage": "https://github.com/AlbertDaYoungYT/UniSense-Extended#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nullkal/UniSense.git"
+    "url": "https://github.com/AlbertDaYoungYT/UniSense-Extended.git"
   },
   "author": {
-    "name": "nullkal",
-    "email": "nullkal@nil.nu"
-  },
-  "samples": [
-    {
-      "displayName": "DualSense Main Sample",
-      "description": "Shows how to use the DualSense main features.",
-      "path": "Samples~/MainSample"
-    }
-  ]
+    "name": "AlbertDaYoungYT",
+    "email": "kcobain465@gmail.com"
+  }
 }
