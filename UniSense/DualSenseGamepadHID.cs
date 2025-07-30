@@ -21,6 +21,9 @@ namespace UniSense
         public ButtonControl leftTriggerButton { get; protected set; }
         public ButtonControl rightTriggerButton { get; protected set; }
         public ButtonControl playStationButton { get; protected set; }
+        
+        public DualSenseTouchpadControl touchpad { get; protected set; }
+
 
         public ButtonControl micMuteButton { get; protected set; }
 
@@ -57,7 +60,7 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            InputSystem.RegisterLayout<DSTouchpad>("DSTouchpad");
+            InputSystem.RegisterLayout<DualSenseTouchpadControl>();
 
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
@@ -72,6 +75,7 @@ namespace UniSense
             leftTriggerButton = GetChildControl<ButtonControl>("leftTriggerButton");
             rightTriggerButton = GetChildControl<ButtonControl>("rightTriggerButton");
             playStationButton = GetChildControl<ButtonControl>("systemButton");
+            touchpad = GetChildControl<DSTouchpad>("touchpad");
             micMuteButton = GetChildControl<ButtonControl>("micMuteButton");
 
             base.FinishSetup();
@@ -222,11 +226,11 @@ namespace UniSense
         private DualSenseTriggerState? m_leftTriggerState;
     }
 
-    [InputControlLayout(displayName = "DSTouchpad")]
-    public class DSTouchpad : Touchscreen
+    [InputControlLayout(displayName = "DualSense Touchpad Control")]
+    public class DualSenseTouchpadControl : InputControl
     {
-        public new TouchControl primaryTouch { get; protected set; }
-        public TouchControl secondaryTouch { get; protected set; }
+        public TouchControl primaryTouch { get; private set; }
+        public TouchControl secondaryTouch { get; private set; }
 
         protected override void FinishSetup()
         {
