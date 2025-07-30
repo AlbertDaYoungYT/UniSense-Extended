@@ -88,7 +88,7 @@ namespace UniSense.LowLevel
         [InputControl(name = "touchpadButton", layout = "Button", displayName = "Touchpad Press", bit = 1)]
         [InputControl(name = "micMuteButton", layout = "Button", displayName = "Mic Mute", bit = 2)]
         [FieldOffset(10)] public byte buttons3;
-        
+
         // Bytes at offsets 11-15 are unmapped in the original HID report before gyro/accel.
 
         [InputControl(name = "gyro", format = "VC3S", layout = "Vector3")]
@@ -98,7 +98,7 @@ namespace UniSense.LowLevel
         [FieldOffset(16)] public short gyroPitch;
         [FieldOffset(18)] public short gyroYaw;
         [FieldOffset(20)] public short gyroRoll;
-    
+
         [InputControl(name = "accel", format = "VC3S", layout = "Vector3")]
         [InputControl(name = "accel/x", layout = "Axis", format = "SHRT")]
         [InputControl(name = "accel/y", offset = 2, layout = "Axis", format = "SHRT")]
