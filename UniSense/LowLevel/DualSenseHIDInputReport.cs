@@ -17,7 +17,10 @@ namespace UniSense.LowLevel
         // The actual data mapping for the touch points (x, y, down, id)
         // is still handled by FieldOffset attributes in DualSenseHIDInputReport.
 
+        [InputControl(name = "primaryTouch", layout = "Touch")]
         public TouchControl primaryTouch { get; protected set; }
+
+        [InputControl(name = "secondaryTouch", layout = "Touch")]
         public TouchControl secondaryTouch { get; protected set; }
 
         protected override void FinishSetup()
@@ -145,34 +148,30 @@ namespace UniSense.LowLevel
         // --- Touchpad Input Fields ---
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
-        // Removed 'layout = "Touchpad"' as it's not a pre-defined layout in Input System
         [InputControl(name = "touchpad", layout = "DualSenseTouchpadControl")] // Overall touchpad control group
-        // Removed 'layout = "Touch"' as it's not a pre-defined layout for nested controls
-        [InputControl(name = "touchpad/primaryTouch")]
-        [InputControl(name = "touchpad/primaryTouch/x", format = "UINT")]
+
+        [InputControl(name = "touchpad/primaryTouch/position/x", format = "UINT")]
         [FieldOffset(28)] public uint touchPoint1X;
 
-        [InputControl(name = "touchpad/primaryTouch/y", format = "UINT")]
+        [InputControl(name = "touchpad/primaryTouch/position/y", format = "UINT")]
         [FieldOffset(32)] public uint touchPoint1Y;
 
-        [InputControl(name = "touchpad/primaryTouch/down", layout = "Button")]
+        [InputControl(name = "touchpad/primaryTouch/press", layout = "Button")]
         [FieldOffset(36)] public byte touchPoint1Down; // 0 for up, 1 for down
 
-        [InputControl(name = "touchpad/primaryTouch/id", format = "BYTE")]
+        [InputControl(name = "touchpad/primaryTouch/touchId", format = "BYTE")]
         [FieldOffset(37)] public byte touchPoint1Id;
 
-        // Removed 'layout = "Touch"' as it's not a pre-defined layout for nested controls
-        [InputControl(name = "touchpad/secondaryTouch")] 
-        [InputControl(name = "touchpad/secondaryTouch/x", format = "UINT")]
+        [InputControl(name = "touchpad/secondaryTouch/position/x", format = "UINT")]
         [FieldOffset(38)] public uint touchPoint2X;
 
-        [InputControl(name = "touchpad/secondaryTouch/y", format = "UINT")]
+        [InputControl(name = "touchpad/secondaryTouch/position/y", format = "UINT")]
         [FieldOffset(42)] public uint touchPoint2Y;
 
-        [InputControl(name = "touchpad/secondaryTouch/down", layout = "Button")]
+        [InputControl(name = "touchpad/secondaryTouch/press", layout = "Button")]
         [FieldOffset(46)] public byte touchPoint2Down; // 0 for up, 1 for down
 
-        [InputControl(name = "touchpad/secondaryTouch/id", format = "BYTE")]
+        [InputControl(name = "touchpad/secondaryTouch/touchId", format = "BYTE")]
         [FieldOffset(47)] public byte touchPoint2Id;
         // --- End Touchpad Input Fields ---
 
