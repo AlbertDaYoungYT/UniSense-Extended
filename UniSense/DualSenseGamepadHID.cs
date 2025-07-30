@@ -57,17 +57,7 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            InputSystem.RegisterLayout(
-                // Name of the layout
-                "DSTouchpad",
-
-                // How to build it using a layout builder
-                builder =>
-                {
-                    builder.AddControl("primaryTouch").WithLayout("Touch");
-                    builder.AddControl("secondaryTouch").WithLayout("Touch");
-                }
-            );
+            InputSystem.RegisterLayout<DSTouchpad>("DSTouchpad");
 
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
@@ -230,5 +220,19 @@ namespace UniSense
         private float? m_HighFrequenceyMotorSpeed;
         private DualSenseTriggerState? m_rightTriggerState;
         private DualSenseTriggerState? m_leftTriggerState;
+    }
+
+    [InputControlLayout(displayName = "DSTouchpad")]
+    public class DSTouchpad : InputControl
+    {
+        public Touch primaryTouch { get; protected set; }
+        public Touch secondaryTouch { get; protected set; }
+
+        protected override void FinishSetup()
+        {
+            primaryTouch = GetChildControl<Touch>("primaryTouch");
+            secondaryTouch = GetChildControl<Touch>("secondaryTouch");
+            base.FinishSetup();
+        }
     }
 }
