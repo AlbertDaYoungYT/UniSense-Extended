@@ -30,18 +30,19 @@ namespace UniSense
     
     public enum DualSenseMicLedState
     {
-        Off,
-        On,
-        Pulsating,
+        OFF = 0x00,
+        ON = 0x01,
+        PULSE = 0x02,
     }
     
     public enum DualSenseTriggerEffectType : byte
     {
-        NoResistance = 0,
-        ContinuousResistance,
-        SectionResistance,
-        EffectEx,
-        Calibrate,
+        NoResitance = 0x00,
+        ContinuousResitance = 0x01,
+        SectionResitance = 0x02,
+        ReleaseAll = 0x05, // New
+        EffectEx = 0x26,
+        Calibrate = 0xFC,
     }
     
     [StructLayout(LayoutKind.Explicit)]
@@ -79,9 +80,9 @@ namespace UniSense
 
     public enum PlayerLedBrightness
     {
-        High,
-        Medium,
-        Low,
+        LOW = 0x02,
+        MEDIUM = 0x01,
+        HIGH = 0x00,
     }
 
     public struct PlayerLedState

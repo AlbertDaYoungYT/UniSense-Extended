@@ -11,7 +11,7 @@ namespace UniSense
 {
     [InputControlLayout(
         stateType = typeof(DualSenseHIDInputReport),
-        displayName = "PS5 Controller")]
+        displayName = "DualSense Extended Gamepad")]
     [Preserve]
 #if UNITY_EDITOR
     [InitializeOnLoad]
