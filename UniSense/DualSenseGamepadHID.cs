@@ -59,7 +59,7 @@ namespace UniSense
         {
             InputSystem.RegisterLayout(builder =>
             {
-                builder.name = "Touchpad";
+                builder.name = "DSTouchpad";
                 builder.AddControl("primaryTouch").WithLayout("Touch");
                 builder.AddControl("secondaryTouch").WithLayout("Touch");
             }, "Touchpad");
