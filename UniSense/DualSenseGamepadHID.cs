@@ -22,9 +22,6 @@ namespace UniSense
         public ButtonControl rightTriggerButton { get; protected set; }
         public ButtonControl playStationButton { get; protected set; }
 
-        [InputControl(name = "touchpad", layout = "DualSenseTouchpad")]
-        public DualSenseTouchpad touchpad;
-
         public ButtonControl micMuteButton { get; protected set; }
 
 #if UNITY_EDITOR
@@ -60,11 +57,6 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            InputSystem.RegisterLayout<DualSenseTouchpad>(
-                name: "DualSenseTouchpad"
-            );
-
-
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
                     .WithInterface("HID")
@@ -227,19 +219,5 @@ namespace UniSense
         private float? m_HighFrequenceyMotorSpeed;
         private DualSenseTriggerState? m_rightTriggerState;
         private DualSenseTriggerState? m_leftTriggerState;
-    }
-
-    [InputControlLayout(displayName = "DualSense Touchpad Control")]
-    public class DualSenseTouchpadControl : InputControl
-    {
-        public TouchControl primaryTouch { get; private set; }
-        public TouchControl secondaryTouch { get; private set; }
-
-        protected override void FinishSetup()
-        {
-            primaryTouch = GetChildControl<TouchControl>("primaryTouch");
-            secondaryTouch = GetChildControl<TouchControl>("secondaryTouch");
-            base.FinishSetup();
-        }
     }
 }
