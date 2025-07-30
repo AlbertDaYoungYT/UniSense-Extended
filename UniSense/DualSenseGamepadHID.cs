@@ -22,6 +22,7 @@ namespace UniSense
         public ButtonControl rightTriggerButton { get; protected set; }
         public ButtonControl playStationButton { get; protected set; }
         
+        [InputControl(layout = "DualSenseTouchpadControl")]
         public DualSenseTouchpadControl touchpad { get; protected set; }
 
 
