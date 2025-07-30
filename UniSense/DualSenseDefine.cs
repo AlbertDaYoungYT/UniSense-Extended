@@ -115,14 +115,4 @@ namespace UniSense
             if (fade) Value |= FADE;
         }
     }
-
-    [InputControlLayout(displayName = "DualSense Touchpad")]
-    public struct DualSenseTouchpad
-    {
-        [InputControl(layout = "Touch")]
-        public TouchControl primaryTouch;
-
-        [InputControl(layout = "Touch")]
-        public TouchControl secondaryTouch;
-    }
 }

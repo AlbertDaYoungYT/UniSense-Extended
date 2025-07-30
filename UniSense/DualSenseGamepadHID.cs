@@ -70,7 +70,7 @@ namespace UniSense
             leftTriggerButton = GetChildControl<ButtonControl>("leftTriggerButton");
             rightTriggerButton = GetChildControl<ButtonControl>("rightTriggerButton");
             playStationButton = GetChildControl<ButtonControl>("systemButton");
-            touchpad = GetChildControl<DSTouchpad>("touchpad");
+
             micMuteButton = GetChildControl<ButtonControl>("micMuteButton");
 
             base.FinishSetup();
