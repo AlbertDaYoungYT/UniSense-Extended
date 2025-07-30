@@ -21,10 +21,9 @@ namespace UniSense
         public ButtonControl leftTriggerButton { get; protected set; }
         public ButtonControl rightTriggerButton { get; protected set; }
         public ButtonControl playStationButton { get; protected set; }
-        
-        [InputControl(layout = "DualSenseTouchpadControl")]
-        public DualSenseTouchpadControl touchpad { get; protected set; }
 
+        [InputControl(name = "touchpad", layout = "DualSenseTouchpad")]
+        public DualSenseTouchpad touchpad;
 
         public ButtonControl micMuteButton { get; protected set; }
 
@@ -61,7 +60,10 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            InputSystem.RegisterLayout<DualSenseTouchpadControl>();
+            InputSystem.RegisterLayout<DualSenseTouchpad>(
+                name: "DualSenseTouchpad"
+            );
+
 
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
