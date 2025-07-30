@@ -57,7 +57,6 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            InputSystem.RegisterLayout<DualSenseTouchpadControl>();
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
                     .WithInterface("HID")

@@ -8,38 +8,6 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace UniSense.LowLevel
 {
-    // Define the custom control layout for the touchpad
-    [InputControlLayout(commonUsages = new[] { "Touchscreen" })]
-    public unsafe class DualSenseTouchpadControl : InputControl<Vector2>
-    {
-        // This class acts as a container. Its purpose is to define the layout
-        // for the 'touchpad' control in DualSenseHIDInputReport.
-        // The actual data mapping for the touch points (x, y, down, id)
-        // is still handled by FieldOffset attributes in DualSenseHIDInputReport.
-        
-        private TouchControl primaryTouch;
-        private TouchControl secondaryTouch;
-        
-        protected override void FinishSetup()
-        {
-            base.FinishSetup();
-            primaryTouch = GetChildControl<TouchControl>("primaryTouch");
-            secondaryTouch = GetChildControl<TouchControl>("secondaryTouch");
-        }
-
-        public override Vector2 ReadUnprocessedValueFromState(void* statePtr)
-        {
-            if (primaryTouch != null)
-                return primaryTouch.position.ReadValueFromState(statePtr);
-            return default;
-        }
-
-        public override void WriteValueIntoState(Vector2 value, void* statePtr)
-        {
-            // This control is read-only, so we don't need to implement writing.
-        }
-    }
-
     [StructLayout(LayoutKind.Explicit, Size = 64)]
     internal struct DualSenseHIDInputReport : IInputStateTypeInfo
     {
@@ -145,8 +113,7 @@ namespace UniSense.LowLevel
         // --- Touchpad Input Fields ---
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
-        [InputControl(name = "touchpad", layout = "DualSenseTouchpadControl")]
-        [InputControl(name = "touchpad/primaryTouch", layout = "Touch")]
+        [InputControl(name = "touchpad", layout = "Touchscreen")]
         [InputControl(name = "touchpad/secondaryTouch", layout = "Touch")]
 
         [InputControl(name = "touchpad/primaryTouch/position/x", format = "UINT", parameters = "normalize,normalizeMin=0,normalizeMax=1919")]
