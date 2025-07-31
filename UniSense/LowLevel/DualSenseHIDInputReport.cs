@@ -115,8 +115,8 @@ namespace UniSense.LowLevel
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
         //[InputControl(name = "touchpad", layout = "Touchscreen")]
         [InputControl(name = "touch0", layout = "Touch", format = "VC2S", displayName = "Touch 0")]
-        [InputControl(name = "touch0/position/x", format = "UINT", sizeInBits = 32, parameters = "clampMin=0,clampMax=1919")]
-        [InputControl(name = "touch0/position/y", format = "UINT", sizeInBits = 32, parameters = "clampMin=0,clampMax=1079")]
+        [InputControl(name = "touch0/position/x", sizeInBits = 32, parameters = "clampMin=0,clampMax=1919")]
+        [InputControl(name = "touch0/position/y", sizeInBits = 32, parameters = "clampMin=0,clampMax=1079")]
         //[InputControl(name = "touch0/press", offset = 8, layout = "TouchPress", bit = 0)]
         //[InputControl(name = "touch0/touchId", offset = 9, layout = "Integer", format = "BYTE")]
         [FieldOffset(32)] public uint touchPoint1X;
