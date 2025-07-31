@@ -119,8 +119,8 @@ namespace UniSense.LowLevel
         [InputControl(name = "touch0/y", format = "UINT", sizeInBits = 4, parameters = "clampMin=0,clampMax=1079")]
         //[InputControl(name = "touch0/press", offset = 8, layout = "TouchPress", bit = 0)]
         //[InputControl(name = "touch0/touchId", offset = 9, layout = "Integer", format = "BYTE")]
-        [FieldOffset(28)] public uint touchPoint1X;
-        [FieldOffset(32)] public uint touchPoint1Y;
+        [FieldOffset(30)] public uint touchPoint1X;
+        [FieldOffset(34)] public uint touchPoint1Y;
         //[FieldOffset(36)] public byte touchPoint1Down; // 0 for up, 1 for down
         //[FieldOffset(37)] public byte touchPoint1Id;
 
@@ -129,8 +129,8 @@ namespace UniSense.LowLevel
         [InputControl(name = "touch1/y", format = "UINT", sizeInBits = 4, parameters = "clampMin=0,clampMax=1079")]
         //[InputControl(name = "touch1/press", offset = 8, layout = "TouchPress", bit = 0)]
         //[InputControl(name = "touch1/touchId", offset = 9, layout = "Integer", format = "BYTE")]
-        [FieldOffset(38)] public uint touchPoint2X;
-        [FieldOffset(42)] public uint touchPoint2Y;
+        [FieldOffset(40)] public uint touchPoint2X;
+        [FieldOffset(44)] public uint touchPoint2Y;
         //[FieldOffset(46)] public byte touchPoint2Down; // 0 for up, 1 for down
         //[FieldOffset(47)] public byte touchPoint2Id;
         // --- End Touchpad Input Fields ---
