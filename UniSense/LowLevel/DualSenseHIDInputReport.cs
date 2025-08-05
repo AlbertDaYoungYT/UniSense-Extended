@@ -81,6 +81,9 @@ namespace UniSense.LowLevel
         public AxisControl pressure { get; private set; }
         public ButtonControl isPressed { get; private set; }
 
+        public override int valueSizeInBytes => sizeof(DualSenseTouchPointState);
+        public override System.Type valueType => typeof(DualSenseTouchPointState);
+
         protected override void FinishSetup()
         {
             // Get references to the controls from the builder based on their names
@@ -97,7 +100,7 @@ namespace UniSense.LowLevel
             base.FinishSetup();
         }
 
-        protected override bool CompareValue(void* firstStatePtr, void* secondStatePtr)
+        public override bool CompareValue(void* firstStatePtr, void* secondStatePtr)
         {
             var firstValue = (DualSenseTouchPointState*)firstStatePtr;
             var secondValue = (DualSenseTouchPointState*)secondStatePtr;
@@ -115,7 +118,7 @@ namespace UniSense.LowLevel
             return true;
         }
 
-        protected override object ReadValueFromBufferAsObject(void* buffer, int bufferSize)
+        public override object ReadValueFromBufferAsObject(void* buffer, int bufferSize)
         {
             var state = (DualSenseTouchPointState*)buffer;
             return new DualSenseTouchPointState
@@ -127,7 +130,7 @@ namespace UniSense.LowLevel
             };
         }
 
-        protected override object ReadValueFromStateAsObject(void* statePtr)
+        public override object ReadValueFromStateAsObject(void* statePtr)
         {
             var state = (DualSenseTouchPointState*)statePtr;
             return new DualSenseTouchPointState
@@ -139,7 +142,7 @@ namespace UniSense.LowLevel
             };
         }
 
-        protected override void ReadValueFromStateIntoBuffer(void* statePtr, void* bufferPtr, int bufferSize)
+        public override void ReadValueFromStateIntoBuffer(void* statePtr, void* bufferPtr, int bufferSize)
         {
             if (bufferPtr == null)
                 return;
