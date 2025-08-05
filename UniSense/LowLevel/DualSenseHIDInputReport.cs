@@ -154,7 +154,7 @@ namespace UniSense.LowLevel
         // For simplicity, assuming 16-bit ushorts here. Actual packing might need custom processors.
         // Example: X coordinate (12 bits) starts at bit 0 of byte 1, Y coordinate (12 bits) starts at bit 4 of byte 2.
         [FieldOffset(1)]
-        [InputControl(name = "position", layout = "Vector2", format = "VC2", parameters = "valueSizeInBytes=3")] // Will be mapped to a Vector2Control
+        [InputControl(name = "position", layout = "Vector2", format = "VC2")] // Will be mapped to a Vector2Control
         public ushort rawX; // Raw 12-bit X value (packed into 16-bit ushort)
         [FieldOffset(2)] // Assuming rawX and rawY are consecutive in the report
         public ushort rawY; // Raw 12-bit Y value (packed into 16-bit ushort)
