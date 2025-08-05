@@ -154,9 +154,11 @@ namespace UniSense.LowLevel
         //[FieldOffset(42)] public int touchPoint1Timestamp;
 
         
+        [InputControl(name = "touch0", layout = "Vector2", displayName = "Touch 0")]
         [FieldOffset(36)]
         public DualSenseTouchPoint touch0;
 
+        [InputControl(name = "touch1", layout = "Vector2", displayName = "Touch 0")]
         [FieldOffset(42)]
         public DualSenseTouchPoint touch1;
 
