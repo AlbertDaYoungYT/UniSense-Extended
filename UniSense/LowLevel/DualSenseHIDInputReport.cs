@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace UniSense.LowLevel
 {
-    [InputControlLayout(displayName = "DualSense Touch Point", sizeInBytes = 8)]
+    [InputControlLayout(displayName = "DualSense Touch Point", stateType = typeof(DualSenseTouchPointState))]
     public unsafe class DualSenseTouchPoint : InputControl
     {
         // Expose the individual controls that are defined in DualSenseTouchPointState
