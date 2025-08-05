@@ -9,8 +9,8 @@ using UnityEngine.InputSystem.Utilities;
 namespace UniSense.LowLevel
 {
     [StructLayout(LayoutKind.Explicit, Size = 6)]
-    //[InputControlLayout(displayName = "DualSense Touch Point")]
-    internal struct DualSenseTouchPoint
+    [InputControlLayout(displayName = "DualSense Touch Point")]
+    internal class DualSenseTouchPoint
     {
         [InputControl(name = "touchId", offset = 0, sizeInBits = 7, layout = "Integer", format = "BYTE")]
         [InputControl(name = "press", offset = 0, sizeInBits = 1, layout = "Button", bit = 7)]
@@ -35,6 +35,7 @@ namespace UniSense.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
+        [InputControl(name = "reportId", format = "BYTE")]
         [FieldOffset(0)] public byte reportId;
 
         [InputControl(name = "leftStick", layout = "Stick", format = "VC2B")]
@@ -137,10 +138,10 @@ namespace UniSense.LowLevel
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
 
         [InputControl(name = "touch0", layout = "DualSenseTouchPoint")]
-        [FieldOffset(36)] public DualSenseTouchPoint touch0;
+        [FieldOffset(32)] public DualSenseTouchPoint touch0;
 
         [InputControl(name = "touch1", layout = "DualSenseTouchPoint")]
-        [FieldOffset(42)] public DualSenseTouchPoint touch1;
+        [FieldOffset(38)] public DualSenseTouchPoint touch1;
 
 
         // --- End Touchpad Input Fields ---
