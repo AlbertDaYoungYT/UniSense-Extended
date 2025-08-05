@@ -36,7 +36,7 @@ namespace UniSense.LowLevel
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
-        [InputControl(name = "reportId", format = "BYTE")]
+        [InputControl(name = "reportId", format = "BYTE", layout = "Integer", sizeInBits = 8)]
         [FieldOffset(0)] public byte reportId;
 
         [InputControl(name = "leftStick", layout = "Stick", format = "VC2B")]
