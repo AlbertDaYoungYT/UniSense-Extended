@@ -147,11 +147,11 @@ namespace UniSense.LowLevel
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
 
-        [InputControl(name = "touch0", layout = "Touch"]
+        [InputControl(name = "touch0", layout = "Touch")]
         [FieldOffset(36)]
         public DualSenseTouchPoint touch0;
 
-        [InputControl(name = "touch1", layout = "Touch"]
+        [InputControl(name = "touch1", layout = "Touch")]
         [FieldOffset(42)]
         public DualSenseTouchPoint touch1;
 
