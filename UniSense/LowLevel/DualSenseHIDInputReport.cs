@@ -73,7 +73,7 @@ namespace UniSense.LowLevel
         // E.g., Byte 1 (8 bits of X), Byte 2 (4 bits of X, 4 bits of Y), Byte 3 (8 bits of Y)
     }
 
-    public class DualSenseTouchPoint : InputControl
+    public unsafe class DualSenseTouchPoint : InputControl
     {
         // Expose the individual controls that are defined in DualSenseTouchPointState
         public IntegerControl touchId { get; private set; }
