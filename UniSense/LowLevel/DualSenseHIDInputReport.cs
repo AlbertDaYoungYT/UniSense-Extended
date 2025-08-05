@@ -132,7 +132,7 @@ namespace UniSense.LowLevel
     // IMPORTANT: The Size and FieldOffset values are examples.
     // You MUST verify these against the actual DualSense HID report structure.
     // Example: 8 bytes per touch point
-    [StructLayout(LayoutKind.Explicit, Size = 8)]
+    [StructLayout(LayoutKind.Explicit, Size = 4)]
     public struct DualSenseTouchPointState : IInputStateTypeInfo
     {
         // A custom FourCC for DualSense touch point data.
@@ -145,7 +145,7 @@ namespace UniSense.LowLevel
         // Example: Byte 0 contains touch ID (bits 0-6) and 'isPressed' (bit 7)
         [FieldOffset(0)]
         [InputControl(name = "touchId", layout = "Integer", sizeInBits = 7, format = "BYTE")]
-        [InputControl(name = "isPressed", layout = "Button", bit = 7)]
+        [InputControl(name = "isPressed", layout = "Button", bit = 8)]
         // Touch ID (0-127)
         // Is touch active?
         public byte touchStatusByte;
@@ -155,6 +155,8 @@ namespace UniSense.LowLevel
         // Example: X coordinate (12 bits) starts at bit 0 of byte 1, Y coordinate (12 bits) starts at bit 4 of byte 2.
         [FieldOffset(1)]
         [InputControl(name = "position", layout = "Vector2", format = "VC2")] // Will be mapped to a Vector2Control
+        [InputControl(name = "x", sizeInBits = 8, layout = "Axis", format = "USHRT")]
+        [InputControl(name = "y", sizeInBits = 8, layout = "Axis", format = "USHRT")]
         public ushort rawX; // Raw 12-bit X value (packed into 16-bit ushort)
         [FieldOffset(2)] // Assuming rawX and rawY are consecutive in the report
         public ushort rawY; // Raw 12-bit Y value (packed into 16-bit ushort)
