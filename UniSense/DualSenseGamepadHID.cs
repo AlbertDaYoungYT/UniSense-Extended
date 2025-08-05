@@ -24,6 +24,11 @@ namespace UniSense
 
         public ButtonControl micMuteButton { get; protected set; }
 
+        public LowLevel.DualSenseTouchPoint touch0 { get; private set; }
+        public LowLevel.DualSenseTouchPoint touch1 { get; private set; }
+
+
+
 #if UNITY_EDITOR
         static DualSenseGamepadHID()
         {
@@ -67,8 +72,8 @@ namespace UniSense
 
         protected override void FinishSetup()
         {
-            touch0 = GetChildControl<DualSenseTouchPoint>("touch0");
-            touch1 = GetChildControl<DualSenseTouchPoint>("touch1");
+            touch0 = GetChildControl<LowLevel.DualSenseTouchPoint>("touch0");
+            touch1 = GetChildControl<LowLevel.DualSenseTouchPoint>("touch1");
 
             leftTriggerButton = GetChildControl<ButtonControl>("leftTriggerButton");
             rightTriggerButton = GetChildControl<ButtonControl>("rightTriggerButton");

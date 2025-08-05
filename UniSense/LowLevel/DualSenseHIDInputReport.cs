@@ -88,10 +88,10 @@ namespace UniSense.LowLevel
         {
             // Get references to the controls from the builder based on their names
             // as defined in the InputControl attributes within DualSenseTouchPointState.
-            touchId = GetChildControl<IntegerControl>(this, "touchId");
-            position = GetChildControl<Vector2Control>(this, "position");
-            pressure = GetChildControl<AxisControl>(this, "pressure");
-            isPressed = GetChildControl<ButtonControl>(this, "isPressed");
+            touchId = GetChildControl<IntegerControl>("touchId");
+            position = GetChildControl<Vector2Control>("position");
+            pressure = GetChildControl<AxisControl>("pressure");
+            isPressed = GetChildControl<ButtonControl>("isPressed");
 
             // If rawX/rawY from DualSenseTouchPointState need custom processing to form Vector2,
             // this is where you might add processors or custom logic.
