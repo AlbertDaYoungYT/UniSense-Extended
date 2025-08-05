@@ -9,28 +9,19 @@ using UnityEngine.InputSystem.Utilities;
 namespace UniSense.LowLevel
 {
     [StructLayout(LayoutKind.Explicit, Size = 6)]
+    [InputControlLayout(displayName = "DualSense Touch Point")]
     internal struct DualSenseTouchPoint
     {
         [InputControl(name = "touchId", offset = 0, sizeInBits = 7, layout = "Integer", format = "BYTE")]
         [InputControl(name = "press", offset = 0, sizeInBits = 1, layout = "Button", bit = 7)]
         [InputControl(name = "x", offset = 1, sizeInBits = 12, layout = "Axis")]
         [InputControl(name = "y", offset = 2, sizeInBits = 12, layout = "Axis")]
-        [InputControl(name = "time", offset = 4, sizeInBits = 16, layout = "Integer", format = "INT")]
-
-        [FieldOffset(0)]
-        public byte rawIdAndActive; // MSB = active flag, lower 7 = ID
-
-        [FieldOffset(1)]
-        public byte xLow;
-
-        [FieldOffset(2)]
-        public byte xHigh_yLow;
-
-        [FieldOffset(3)]
-        public byte yHigh;
-
-        [FieldOffset(4)]
-        public ushort timestamp;
+        [InputControl(name = "time", offset = 4, layout = "Integer", format = "INT")]
+        [FieldOffset(0)] public byte rawIdAndActive;
+        [FieldOffset(1)] public byte xLow;
+        [FieldOffset(2)] public byte xHigh_yLow;
+        [FieldOffset(3)] public byte yHigh;
+        [FieldOffset(4)] public ushort timestamp;
 
         public bool IsActive => (rawIdAndActive & 0x80) == 0;
         public int TouchId => rawIdAndActive & 0x7F;
@@ -38,8 +29,6 @@ namespace UniSense.LowLevel
         public int X => (xLow | ((xHigh_yLow & 0x0F) << 8));
         public int Y => ((xHigh_yLow >> 4) | (yHigh << 4));
     }
-
-
 
     [StructLayout(LayoutKind.Explicit, Size = 78)] // Size 64
     internal struct DualSenseHIDInputReport : IInputStateTypeInfo
@@ -147,13 +136,12 @@ namespace UniSense.LowLevel
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
 
-        [InputControl(name = "touch0", layout = "Vector2")]
-        [FieldOffset(36)]
-        public DualSenseTouchPoint touch0;
+        [InputControl(name = "touch0", layout = "DualSenseTouchPoint")]
+        [FieldOffset(36)] public DualSenseTouchPoint touch0;
 
-        [InputControl(name = "touch1", layout = "Vector2")]
-        [FieldOffset(42)]
-        public DualSenseTouchPoint touch1;
+        [InputControl(name = "touch1", layout = "DualSenseTouchPoint")]
+        [FieldOffset(42)] public DualSenseTouchPoint touch1;
+
 
         // --- End Touchpad Input Fields ---
 
