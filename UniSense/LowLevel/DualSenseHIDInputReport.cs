@@ -144,6 +144,8 @@ namespace UniSense.LowLevel
         // Touch ID and 'Is Pressed' bit (often combined in one byte)
         // Example: Byte 0 contains touch ID (bits 0-6) and 'isPressed' (bit 7)
         [FieldOffset(0)]
+        [InputControl(name = "touchId", layout = "Integer", sizeInBits = 7, format = "BYTE")]
+        [InputControl(name = "isPressed", layout = "Button", bit = 7)]
         // Touch ID (0-127)
         // Is touch active?
         public byte touchStatusByte;
@@ -152,14 +154,14 @@ namespace UniSense.LowLevel
         // For simplicity, assuming 16-bit ushorts here. Actual packing might need custom processors.
         // Example: X coordinate (12 bits) starts at bit 0 of byte 1, Y coordinate (12 bits) starts at bit 4 of byte 2.
         [FieldOffset(1)]
-        [InputControl(name = "position", layout = "Vector2", format = "VEC2")] // Will be mapped to a Vector2Control
+        [InputControl(name = "position", layout = "Vector2", format = "VC2", sizeInBits = 24, parameters = "sizeInBits=24")] // Will be mapped to a Vector2Control
         public ushort rawX; // Raw 12-bit X value (packed into 16-bit ushort)
         [FieldOffset(2)] // Assuming rawX and rawY are consecutive in the report
         public ushort rawY; // Raw 12-bit Y value (packed into 16-bit ushort)
 
         // Pressure value (often 1 byte)
         [FieldOffset(3)] // Example offset
-    
+        [InputControl(name = "pressure", layout = "Axis", format = "BYTE")]
         public byte rawPressure;
 
         // Note: If X/Y are packed into fewer bytes or use different bit offsets,
