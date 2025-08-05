@@ -57,6 +57,7 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
+            InputSystem.RegisterLayout<LowLevel.DualSenseTouchPoint>();
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
                     .WithInterface("HID")
@@ -67,6 +68,9 @@ namespace UniSense
 
         protected override void FinishSetup()
         {
+            touch0 = GetChildControl<DualSenseTouchPoint>("touch0");
+            touch1 = GetChildControl<DualSenseTouchPoint>("touch1");
+
             leftTriggerButton = GetChildControl<ButtonControl>("leftTriggerButton");
             rightTriggerButton = GetChildControl<ButtonControl>("rightTriggerButton");
             playStationButton = GetChildControl<ButtonControl>("systemButton");

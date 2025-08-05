@@ -8,6 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace UniSense.LowLevel
 {
+    /*
     [StructLayout(LayoutKind.Explicit, Size = 6)]
     // ❌ REMOVE THIS:
     // [InputControlLayout(displayName = "DualSense Touch Point")]
@@ -29,6 +30,71 @@ namespace UniSense.LowLevel
 
         public int X => (xLow | ((xHigh_yLow & 0x0F) << 8));
         public int Y => ((xHigh_yLow >> 4) | (yHigh << 4));
+    }*/
+
+    // This struct represents the raw binary data for a single touch point
+    // within the DualSense HID report.
+    // IMPORTANT: The Size and FieldOffset values are examples.
+    // You MUST verify these against the actual DualSense HID report structure.
+    // Example: 8 bytes per touch point
+    public struct DualSenseTouchPointState : IInputStateTypeInfo
+    {
+        // A custom FourCC for DualSense touch point data.
+        // This is used internally by the Input System to identify the data format.
+        public FourCC format => new FourCC('D', 'S', 'T', 'P'); // DualSense Touch Point
+
+        // FieldOffset(0) is the start of this touch point's data block.
+
+        // Touch ID and 'Is Pressed' bit (often combined in one byte)
+        // Example: Byte 0 contains touch ID (bits 0-6) and 'isPressed' (bit 7)
+        [FieldOffset(0)]
+        // Touch ID (0-127)
+        // Is touch active?
+        public byte touchStatusByte;
+
+        // X and Y coordinates (often 12-bit values packed into 2 bytes each)
+        // For simplicity, assuming 16-bit ushorts here. Actual packing might need custom processors.
+        // Example: X coordinate (12 bits) starts at bit 0 of byte 1, Y coordinate (12 bits) starts at bit 4 of byte 2.
+        [FieldOffset(1)]
+        [InputControl(name = "position", layout = "Vector2", format = "VEC2")] // Will be mapped to a Vector2Control
+        public ushort rawX; // Raw 12-bit X value (packed into 16-bit ushort)
+        [FieldOffset(2)] // Assuming rawX and rawY are consecutive in the report
+        public ushort rawY; // Raw 12-bit Y value (packed into 16-bit ushort)
+
+        // Pressure value (often 1 byte)
+        [FieldOffset(3)] // Example offset
+    
+        public byte rawPressure;
+
+        // Note: If X/Y are packed into fewer bytes or use different bit offsets,
+        // you might need custom processors or more granular bit offsets.
+        // For instance, if X is 12 bits and Y is 12 bits, they might span 3 bytes.
+        // E.g., Byte 1 (8 bits of X), Byte 2 (4 bits of X, 4 bits of Y), Byte 3 (8 bits of Y)
+    }
+
+    public class DualSenseTouchPoint : InputControl
+    {
+        // Expose the individual controls that are defined in DualSenseTouchPointState
+        public IntegerControl touchId { get; private set; }
+        public Vector2Control position { get; private set; }
+        public AxisControl pressure { get; private set; }
+        public ButtonControl isPressed { get; private set; }
+
+        protected override void FinishSetup(InputDeviceBuilder builder)
+        {
+            base.FinishSetup(builder);
+            // Get references to the controls from the builder based on their names
+            // as defined in the InputControl attributes within DualSenseTouchPointState.
+            touchId = builder.GetControl<IntegerControl>(this, "touchId");
+            position = builder.GetControl<Vector2Control>(this, "position");
+            pressure = builder.GetControl<AxisControl>(this, "pressure");
+            isPressed = builder.GetControl<ButtonControl>(this, "isPressed");
+
+            // If rawX/rawY from DualSenseTouchPointState need custom processing to form Vector2,
+            // this is where you might add processors or custom logic.
+            // For example:
+            // position.SetProcessor(new DualSenseTouchpadPositionProcessor());
+        }
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 78)] // Size 64
@@ -139,10 +205,10 @@ namespace UniSense.LowLevel
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
 
         [InputControl(name = "touch0", layout = "DualSenseTouchPoint")]
-        [FieldOffset(32)] public DualSenseTouchPoint touch0;
+        [FieldOffset(32)] public DualSenseTouchPointState touch0;
 
         [InputControl(name = "touch1", layout = "DualSenseTouchPoint")]
-        [FieldOffset(38)] public DualSenseTouchPoint touch1;
+        [FieldOffset(40)] public DualSenseTouchPointState touch1;
 
 
         // --- End Touchpad Input Fields ---
