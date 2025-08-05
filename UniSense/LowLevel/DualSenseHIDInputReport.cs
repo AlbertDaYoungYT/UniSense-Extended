@@ -146,21 +146,21 @@ namespace UniSense.LowLevel
         [FieldOffset(0)]
         // Touch ID (0-127)
         // Is touch active?
-        public byte touchId;
+        public byte touchStatusByte;
 
         // X and Y coordinates (often 12-bit values packed into 2 bytes each)
         // For simplicity, assuming 16-bit ushorts here. Actual packing might need custom processors.
         // Example: X coordinate (12 bits) starts at bit 0 of byte 1, Y coordinate (12 bits) starts at bit 4 of byte 2.
         [FieldOffset(1)]
         [InputControl(name = "position", layout = "Vector2", format = "VEC2")] // Will be mapped to a Vector2Control
-        public ushort x; // Raw 12-bit X value (packed into 16-bit ushort)
+        public ushort rawX; // Raw 12-bit X value (packed into 16-bit ushort)
         [FieldOffset(2)] // Assuming rawX and rawY are consecutive in the report
-        public ushort y; // Raw 12-bit Y value (packed into 16-bit ushort)
+        public ushort rawY; // Raw 12-bit Y value (packed into 16-bit ushort)
 
         // Pressure value (often 1 byte)
         [FieldOffset(3)] // Example offset
     
-        public byte pressure; // Raw
+        public byte rawPressure;
 
         // Note: If X/Y are packed into fewer bytes or use different bit offsets,
         // you might need custom processors or more granular bit offsets.
