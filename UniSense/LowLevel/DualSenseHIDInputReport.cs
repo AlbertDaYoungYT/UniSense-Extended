@@ -8,6 +8,101 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace UniSense.LowLevel
 {
+    [InputControlLayout(displayName = "DualSense Touch Point")]
+    public unsafe class DualSenseTouchPoint : InputControl
+    {
+        // Expose the individual controls that are defined in DualSenseTouchPointState
+        public IntegerControl touchId { get; private set; }
+        public Vector2Control position { get; private set; }
+        public AxisControl pressure { get; private set; }
+        public ButtonControl isPressed { get; private set; }
+
+        public override int valueSizeInBytes => sizeof(DualSenseTouchPointState);
+        public override System.Type valueType => typeof(DualSenseTouchPointState);
+
+        protected override void FinishSetup()
+        {
+            // Get references to the controls from the builder based on their names
+            // as defined in the InputControl attributes within DualSenseTouchPointState.
+            touchId = GetChildControl<IntegerControl>("touchId");
+            position = GetChildControl<Vector2Control>("position");
+            pressure = GetChildControl<AxisControl>("pressure");
+            isPressed = GetChildControl<ButtonControl>("isPressed");
+
+            // If rawX/rawY from DualSenseTouchPointState need custom processing to form Vector2,
+            // this is where you might add processors or custom logic.
+            // For example:
+            // position.SetProcessor(new DualSenseTouchpadPositionProcessor());
+            base.FinishSetup();
+        }
+
+        public override bool CompareValue(void* firstStatePtr, void* secondStatePtr)
+        {
+            var firstValue = (DualSenseTouchPointState*)firstStatePtr;
+            var secondValue = (DualSenseTouchPointState*)secondStatePtr;
+
+            // Compare individual fields for changes
+            if (firstValue->touchStatusByte != secondValue->touchStatusByte)
+                return false;
+            if (firstValue->rawX != secondValue->rawX)
+                return false;
+            if (firstValue->rawY != secondValue->rawY)
+                return false;
+            if (firstValue->rawPressure != secondValue->rawPressure)
+                return false;
+
+            return true;
+        }
+
+        public override object ReadValueFromBufferAsObject(void* buffer, int bufferSize)
+        {
+            var state = (DualSenseTouchPointState*)buffer;
+            return new DualSenseTouchPointState
+            {
+                touchStatusByte = state->touchStatusByte,
+                rawX = state->rawX,
+                rawY = state->rawY,
+                rawPressure = state->rawPressure
+            };
+        }
+
+        public override object ReadValueFromStateAsObject(void* statePtr)
+        {
+            var state = (DualSenseTouchPointState*)statePtr;
+            return new DualSenseTouchPointState
+            {
+                touchStatusByte = state->touchStatusByte,
+                rawX = state->rawX,
+                rawY = state->rawY,
+                rawPressure = state->rawPressure
+            };
+        }
+
+        public override void ReadValueFromStateIntoBuffer(void* statePtr, void* bufferPtr, int bufferSize)
+        {
+            if (bufferPtr == null)
+                return;
+
+            var state = (DualSenseTouchPointState*)statePtr;
+            var buffer = (DualSenseTouchPointState*)bufferPtr;
+
+            *buffer = *state;
+            if (bufferSize < Marshal.SizeOf<DualSenseTouchPointState>())
+                return;
+
+            if (bufferSize > Marshal.SizeOf<DualSenseTouchPointState>())
+            {
+                // If the buffer is larger, zero out the rest of it.
+                // This prevents old data from lingering if the new state is smaller.
+                var remainingBytes = bufferSize - Marshal.SizeOf<DualSenseTouchPointState>();
+                var remainingPtr = (byte*)bufferPtr + Marshal.SizeOf<DualSenseTouchPointState>();
+                for (int i = 0; i < remainingBytes; ++i)
+                {
+                    remainingPtr[i] = 0;
+                }
+            }
+        }
+    }
     /*
     [StructLayout(LayoutKind.Explicit, Size = 6)]
     // ❌ REMOVE THIS:
