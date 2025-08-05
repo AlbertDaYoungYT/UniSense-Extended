@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace UniSense.LowLevel
 {
-    [InputControlLayout(displayName = "DualSense Touch Point")]
+    [InputControlLayout(displayName = "DualSense Touch Point", sizeInBytes = 8)]
     public unsafe class DualSenseTouchPoint : InputControl
     {
         // Expose the individual controls that are defined in DualSenseTouchPointState
@@ -276,10 +276,10 @@ namespace UniSense.LowLevel
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
 
-        [InputControl(name = "touch0", layout = "DualSenseTouchPoint", sizeInBits = 32)]
+        [InputControl(name = "touch0", layout = "DualSenseTouchPoint")]
         [FieldOffset(32)] public DualSenseTouchPointState touch0;
 
-        [InputControl(name = "touch1", layout = "DualSenseTouchPoint", sizeInBits = 32)]
+        [InputControl(name = "touch1", layout = "DualSenseTouchPoint")]
         [FieldOffset(40)] public DualSenseTouchPointState touch1;
 
 
