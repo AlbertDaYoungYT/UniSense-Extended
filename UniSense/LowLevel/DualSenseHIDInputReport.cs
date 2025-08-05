@@ -11,6 +11,12 @@ namespace UniSense.LowLevel
     [StructLayout(LayoutKind.Explicit, Size = 6)]
     internal struct DualSenseTouchPoint
     {
+        [InputControl(name = "touchId", offset = 0, sizeInBits = 7, layout = "Integer", format = "BYTE")]
+        [InputControl(name = "press", offset = 0, sizeInBits = 1, layout = "Button", bit = 7)]
+        [InputControl(name = "x", offset = 1, sizeInBits = 12, layout = "Axis")]
+        [InputControl(name = "y", offset = 2, sizeInBits = 12, layout = "Axis")]
+        [InputControl(name = "time", offset = 4, sizeInBits = 16, layout = "Integer", format = "INT")]
+
         [FieldOffset(0)]
         public byte rawIdAndActive; // MSB = active flag, lower 7 = ID
 
@@ -141,21 +147,11 @@ namespace UniSense.LowLevel
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
 
-        [InputControl(name = "touch0", layout = "Vector2", displayName = "Touch 0")]
-        [InputControl(name = "touch0/touchId", layout = "Integer", offset = 36, sizeInBits = 7, format = "BYTE")]
-        [InputControl(name = "touch0/press", layout = "Button", offset = 36, sizeInBits = 1, bit = 7)]
-        [InputControl(name = "touch0/x", layout = "Axis", offset = 37, sizeInBits = 12)]
-        [InputControl(name = "touch0/y", layout = "Axis", offset = 38, sizeInBits = 12)]
-        [InputControl(name = "touch0/time", layout = "Integer", offset = 40, format = "INT")]
+        [InputControl(name = "touch0", layout = "Touch", layoutType = typeof(DualSenseTouchPoint))]
         [FieldOffset(36)]
         public DualSenseTouchPoint touch0;
 
-        [InputControl(name = "touch1", layout = "Vector2", displayName = "Touch 0")]
-        [InputControl(name = "touch1/touchId", layout = "Integer", offset = 42, sizeInBits = 7, format = "BYTE")]
-        [InputControl(name = "touch1/press", layout = "Button", offset = 42, sizeInBits = 1, bit = 7)]
-        [InputControl(name = "touch1/x", layout = "Axis", offset = 43, sizeInBits = 12)]
-        [InputControl(name = "touch1/y", layout = "Axis", offset = 44, sizeInBits = 12)]
-        [InputControl(name = "touch1/time", layout = "Integer", offset = 46, format = "INT")]
+        [InputControl(name = "touch1", layout = "Touch", layoutType = typeof(DualSenseTouchPoint))]
         [FieldOffset(42)]
         public DualSenseTouchPoint touch1;
 
