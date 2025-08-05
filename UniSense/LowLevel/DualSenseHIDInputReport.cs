@@ -114,9 +114,9 @@ namespace UniSense.LowLevel
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
         //[InputControl(name = "touchpad", layout = "Touchscreen")]
-        [InputControl(name = "touch0", layout = "Touch", displayName = "Touch 0")]
-        [InputControl(name = "touch0/position/x", layout = "Axis")]
-        [InputControl(name = "touch0/position/y", layout = "Axis")]
+        [InputControl(name = "touch0", displayName = "Touch 0")]
+        [InputControl(name = "touch0/x", layout = "Axis")]
+        [InputControl(name = "touch0/y", layout = "Axis")]
         //[InputControl(name = "touch0/press", offset = 8, layout = "TouchPress", bit = 0)]
         //[InputControl(name = "touch0/touchId", offset = 9, layout = "Integer", format = "BYTE")]
         [FieldOffset(34)] public int touchPoint1X;
@@ -124,9 +124,9 @@ namespace UniSense.LowLevel
         //[FieldOffset(36)] public byte touchPoint1Down; // 0 for up, 1 for down
         //[FieldOffset(37)] public byte touchPoint1Id;
 
-        [InputControl(name = "touch1", layout = "Touch", displayName = "Touch 1")]
-        [InputControl(name = "touch1/position/x", layout = "Axis")]
-        [InputControl(name = "touch1/position/y", layout = "Axis")]
+        [InputControl(name = "touch1", displayName = "Touch 1")]
+        [InputControl(name = "touch1/x", layout = "Axis")]
+        [InputControl(name = "touch1/y", layout = "Axis")]
         //[InputControl(name = "touch1/press", offset = 8, layout = "TouchPress", bit = 0)]
         //[InputControl(name = "touch1/touchId", offset = 9, layout = "Integer", format = "BYTE")]
         [FieldOffset(44)] public int touchPoint2X;
