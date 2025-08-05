@@ -140,37 +140,23 @@ namespace UniSense.LowLevel
         // --- Touchpad Input Fields ---
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
-        //[InputControl(name = "touch0", layout = "Vector2", displayName = "Touch 0")]
-        //[InputControl(name = "touch0/touchId", offset = 0, sizeInBits = 7, layout = "Integer", format = "BYTE")]
-        //[InputControl(name = "touch0/press", offset = 0, sizeInBits = 1, layout = "Button", bit = 7)] // MSB is press state (0 = pressed)
-        //[InputControl(name = "touch0/x", offset = 1, sizeInBits = 12, layout = "Axis", format = "BIT")]
-        //[InputControl(name = "touch0/y", offset = 2, sizeInBits = 12, layout = "Axis", format = "BIT")]
-        //[InputControl(name = "touch0/time", offset = 4, sizeInBits = 16, layout = "Integer", format = "INT")]
 
-        //[FieldOffset(28)] public byte touchPoint1Id;
-        //[FieldOffset(28)] public byte touchPoint1Down; // 0 for up, 1 for down
-        //[FieldOffset(29)] public uint touchPoint1X;
-        //[FieldOffset(30)] public uint touchPoint1Y;
-        //[FieldOffset(42)] public int touchPoint1Timestamp;
-
-        
-        [InputControl(name = "touch0", layout = "Vector2", displayName = "Touch 0")]
+        [InputControl(name = "touch0/touchId", layout = "Integer", offset = 36, sizeInBits = 7, format = "BYTE")]
+        [InputControl(name = "touch0/press", layout = "Button", offset = 36, sizeInBits = 1, bit = 7)]
+        [InputControl(name = "touch0/x", layout = "Axis", offset = 37, sizeInBits = 12)]
+        [InputControl(name = "touch0/y", layout = "Axis", offset = 38, sizeInBits = 12)]
+        [InputControl(name = "touch0/time", layout = "Integer", offset = 40, format = "INT")]
         [FieldOffset(36)]
         public DualSenseTouchPoint touch0;
 
-        [InputControl(name = "touch1", layout = "Vector2", displayName = "Touch 0")]
+        [InputControl(name = "touch1/touchId", layout = "Integer", offset = 42, sizeInBits = 7, format = "BYTE")]
+        [InputControl(name = "touch1/press", layout = "Button", offset = 42, sizeInBits = 1, bit = 7)]
+        [InputControl(name = "touch1/x", layout = "Axis", offset = 43, sizeInBits = 12)]
+        [InputControl(name = "touch1/y", layout = "Axis", offset = 44, sizeInBits = 12)]
+        [InputControl(name = "touch1/time", layout = "Integer", offset = 46, format = "INT")]
         [FieldOffset(42)]
         public DualSenseTouchPoint touch1;
 
-        //[InputControl(name = "touch1", layout = "Vector2", displayName = "Touch 1")]
-        //[InputControl(name = "touch1/x", layout = "Axis")]
-        //[InputControl(name = "touch1/y", layout = "Axis")]
-        //[InputControl(name = "touch1/press", offset = 8, layout = "TouchPress", bit = 0)]
-        //[InputControl(name = "touch1/touchId", offset = 9, layout = "Integer", format = "BYTE")]
-        //[FieldOffset(44)] public int touchPoint2X;
-        //[FieldOffset(48)] public int touchPoint2Y;
-        //[FieldOffset(46)] public byte touchPoint2Down; // 0 for up, 1 for down
-        //[FieldOffset(47)] public byte touchPoint2Id;
         // --- End Touchpad Input Fields ---
 
         // Bytes at offsets 48-53 are still unmapped in this struct,
