@@ -10,7 +10,7 @@ namespace UniSense.LowLevel
 {
     [StructLayout(LayoutKind.Explicit, Size = 6)]
     [InputControlLayout(displayName = "DualSense Touch Point")]
-    internal class DualSenseTouchPoint
+    internal struct DualSenseTouchPoint
     {
         [InputControl(name = "touchId", offset = 0, sizeInBits = 7, layout = "Integer", format = "BYTE")]
         [InputControl(name = "press", offset = 0, sizeInBits = 1, layout = "Button", bit = 7)]
