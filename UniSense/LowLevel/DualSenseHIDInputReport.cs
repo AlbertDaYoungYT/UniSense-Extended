@@ -37,6 +37,7 @@ namespace UniSense.LowLevel
     // IMPORTANT: The Size and FieldOffset values are examples.
     // You MUST verify these against the actual DualSense HID report structure.
     // Example: 8 bytes per touch point
+    [StructLayout(LayoutKind.Explicit, Size = 8)]
     public struct DualSenseTouchPointState : IInputStateTypeInfo
     {
         // A custom FourCC for DualSense touch point data.
@@ -80,20 +81,87 @@ namespace UniSense.LowLevel
         public AxisControl pressure { get; private set; }
         public ButtonControl isPressed { get; private set; }
 
-        protected override void FinishSetup(InputDeviceBuilder builder)
+        protected override void FinishSetup()
         {
-            base.FinishSetup(builder);
             // Get references to the controls from the builder based on their names
             // as defined in the InputControl attributes within DualSenseTouchPointState.
-            touchId = builder.GetControl<IntegerControl>(this, "touchId");
-            position = builder.GetControl<Vector2Control>(this, "position");
-            pressure = builder.GetControl<AxisControl>(this, "pressure");
-            isPressed = builder.GetControl<ButtonControl>(this, "isPressed");
+            touchId = GetChildControl<IntegerControl>(this, "touchId");
+            position = GetChildControl<Vector2Control>(this, "position");
+            pressure = GetChildControl<AxisControl>(this, "pressure");
+            isPressed = GetChildControl<ButtonControl>(this, "isPressed");
 
             // If rawX/rawY from DualSenseTouchPointState need custom processing to form Vector2,
             // this is where you might add processors or custom logic.
             // For example:
             // position.SetProcessor(new DualSenseTouchpadPositionProcessor());
+            base.FinishSetup();
+        }
+
+        protected override bool CompareValue(void* firstStatePtr, void* secondStatePtr)
+        {
+            var firstValue = (DualSenseTouchPointState*)firstStatePtr;
+            var secondValue = (DualSenseTouchPointState*)secondStatePtr;
+
+            // Compare individual fields for changes
+            if (firstValue->touchStatusByte != secondValue->touchStatusByte)
+                return false;
+            if (firstValue->rawX != secondValue->rawX)
+                return false;
+            if (firstValue->rawY != secondValue->rawY)
+                return false;
+            if (firstValue->rawPressure != secondValue->rawPressure)
+                return false;
+
+            return true;
+        }
+
+        protected override object ReadValueFromBufferAsObject(void* buffer, int bufferSize)
+        {
+            var state = (DualSenseTouchPointState*)buffer;
+            return new DualSenseTouchPointState
+            {
+                touchStatusByte = state->touchStatusByte,
+                rawX = state->rawX,
+                rawY = state->rawY,
+                rawPressure = state->rawPressure
+            };
+        }
+
+        protected override object ReadValueFromStateAsObject(void* statePtr)
+        {
+            var state = (DualSenseTouchPointState*)statePtr;
+            return new DualSenseTouchPointState
+            {
+                touchStatusByte = state->touchStatusByte,
+                rawX = state->rawX,
+                rawY = state->rawY,
+                rawPressure = state->rawPressure
+            };
+        }
+
+        protected override void ReadValueFromStateIntoBuffer(void* statePtr, void* bufferPtr, int bufferSize)
+        {
+            if (bufferPtr == null)
+                return;
+
+            var state = (DualSenseTouchPointState*)statePtr;
+            var buffer = (DualSenseTouchPointState*)bufferPtr;
+
+            *buffer = *state;
+            if (bufferSize < Marshal.SizeOf<DualSenseTouchPointState>())
+                return;
+                
+            if (bufferSize > Marshal.SizeOf<DualSenseTouchPointState>())
+            {
+                // If the buffer is larger, zero out the rest of it.
+                // This prevents old data from lingering if the new state is smaller.
+                var remainingBytes = bufferSize - Marshal.SizeOf<DualSenseTouchPointState>();
+                var remainingPtr = (byte*)bufferPtr + Marshal.SizeOf<DualSenseTouchPointState>();
+                for (int i = 0; i < remainingBytes; ++i)
+                {
+                    remainingPtr[i] = 0;
+                }
+            }
         }
     }
 
