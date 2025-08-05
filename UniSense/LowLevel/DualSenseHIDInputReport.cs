@@ -121,12 +121,11 @@ namespace UniSense.LowLevel
         [InputControl(name = "touch0/y", offset = 2, sizeInBits = 12, layout = "Axis")]
         [InputControl(name = "touch0/time", offset = 4, layout = "Integer")]
 
-        [FieldOffset(36)]
-        public byte touchPoint1Id;
-        public byte touchPoint1Down; // 0 for up, 1 for down
-        public uint touchPoint1X;
-        public uint touchPoint1Y;
-        public int touchPoint1Timestamp;
+        [FieldOffset(36)] public byte touchPoint1Id;
+        [FieldOffset(36)] public byte touchPoint1Down; // 0 for up, 1 for down
+        [FieldOffset(37)] public uint touchPoint1X;
+        [FieldOffset(38)] public uint touchPoint1Y;
+        [FieldOffset(40)] public int touchPoint1Timestamp;
 
         //[InputControl(name = "touch1", layout = "Vector2", displayName = "Touch 1")]
         //[InputControl(name = "touch1/x", layout = "Axis")]
