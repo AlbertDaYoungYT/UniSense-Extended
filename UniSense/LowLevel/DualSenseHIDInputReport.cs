@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 namespace UniSense.LowLevel
 {
     [StructLayout(LayoutKind.Explicit, Size = 6)]
-    [InputControlLayout(displayName = "DualSense Touch Point")]
+    //[InputControlLayout(displayName = "DualSense Touch Point")]
     internal struct DualSenseTouchPoint
     {
         [InputControl(name = "touchId", offset = 0, sizeInBits = 7, layout = "Integer", format = "BYTE")]
