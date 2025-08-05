@@ -31,6 +31,12 @@ namespace UniSense.LowLevel
         public int Y => ((xHigh_yLow >> 4) | (yHigh << 4));
     }
 
+    [InputControlLayout(displayName = "DualSense Touch Point")]
+    public class DualSenseTouchPointControl : InputControl
+    {
+        
+    }
+
     [StructLayout(LayoutKind.Explicit, Size = 78)] // Size 64
     internal struct DualSenseHIDInputReport : IInputStateTypeInfo
     {
