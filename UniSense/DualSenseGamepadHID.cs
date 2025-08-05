@@ -1,10 +1,13 @@
-﻿using UniSense.LowLevel;
+﻿using System.Runtime.InteropServices;
+using UniSense.LowLevel;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Layouts;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.Scripting;
 
 namespace UniSense
