@@ -1,4 +1,5 @@
 ﻿using UniSense.LowLevel;
+using UniSense.Utils;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,6 +7,7 @@ using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.Scripting;
+using UnityEngine.UI;
 
 namespace UniSense
 {
@@ -24,8 +26,15 @@ namespace UniSense
 
         public ButtonControl micMuteButton { get; protected set; }
 
-        public DualSenseTouchPoint touch0 { get; private set; }
-        public DualSenseTouchPoint touch1 { get; private set; }
+        public IntegerControl touch0Index { get; private set; }
+        public ButtonControl touch0Detection { get; private set; }
+        public IntegerControl touch0X { get; private set; }
+        public IntegerControl touch0Y { get; private set; }
+
+        public IntegerControl touch1Index { get; private set; }
+        public ButtonControl touch1Detection { get; private set; }
+        public IntegerControl touch1X { get; private set; }
+        public IntegerControl touch1Y { get; private set; }
 
 
 
@@ -62,7 +71,11 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            InputSystem.RegisterLayout<DualSenseTouchPoint>();
+            InputSystem.RegisterLayout<TouchIndexControl>();
+            InputSystem.RegisterLayout<ShortControl>();
+            InputSystem.RegisterLayout<DS5_TouchXAxisControl>();
+            InputSystem.RegisterLayout<DS5_TouchYAxisControl>();
+            //InputSystem.RegisterLayout<DualSenseTouchPoint>();
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
                     .WithInterface("HID")
@@ -73,16 +86,23 @@ namespace UniSense
 
         protected override void FinishSetup()
         {
-            touch0 = GetChildControl<DualSenseTouchPoint>("touch0");
-            touch1 = GetChildControl<DualSenseTouchPoint>("touch1");
+            base.FinishSetup();
+
+            touch0Index = GetChildControl<IntegerControl>("touch0Index");
+            touch0Detection = GetChildControl<ButtonControl>("touch0Detection");
+            touch0X = GetChildControl<IntegerControl>("touch0X");
+            touch0Y = GetChildControl<IntegerControl>("touch0Y");
+
+            touch1Index = GetChildControl<IntegerControl>("touch1Index");
+            touch1Detection = GetChildControl<ButtonControl>("touch1Detection");
+            touch1X = GetChildControl<IntegerControl>("touch1X");
+            touch1Y = GetChildControl<IntegerControl>("touch1Y");
 
             leftTriggerButton = GetChildControl<ButtonControl>("leftTriggerButton");
             rightTriggerButton = GetChildControl<ButtonControl>("rightTriggerButton");
             playStationButton = GetChildControl<ButtonControl>("systemButton");
 
             micMuteButton = GetChildControl<ButtonControl>("micMuteButton");
-
-            base.FinishSetup();
         }
 
         private bool MotorHasValue => m_LowFrequencyMotorSpeed.HasValue || m_HighFrequenceyMotorSpeed.HasValue;

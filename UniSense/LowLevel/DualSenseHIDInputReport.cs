@@ -8,173 +8,8 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace UniSense.LowLevel
 {
-    [InputControlLayout(displayName = "DualSense Touch Point", stateType = typeof(DualSenseTouchPointState))]
-    public unsafe class DualSenseTouchPoint : InputControl
-    {
-        // Expose the individual controls that are defined in DualSenseTouchPointState
-        public IntegerControl touchId { get; private set; }
-        public Vector2Control position { get; private set; }
-        public AxisControl pressure { get; private set; }
-        public ButtonControl isPressed { get; private set; }
-
-        public override int valueSizeInBytes => sizeof(DualSenseTouchPointState);
-        public override System.Type valueType => typeof(DualSenseTouchPointState);
-
-        protected override void FinishSetup()
-        {
-            // Get references to the controls from the builder based on their names
-            // as defined in the InputControl attributes within DualSenseTouchPointState.
-            touchId = GetChildControl<IntegerControl>("touchId");
-            position = GetChildControl<Vector2Control>("position");
-            pressure = GetChildControl<AxisControl>("pressure");
-            isPressed = GetChildControl<ButtonControl>("isPressed");
-
-            // If rawX/rawY from DualSenseTouchPointState need custom processing to form Vector2,
-            // this is where you might add processors or custom logic.
-            // For example:
-            // position.SetProcessor(new DualSenseTouchpadPositionProcessor());
-            base.FinishSetup();
-        }
-
-        public override bool CompareValue(void* firstStatePtr, void* secondStatePtr)
-        {
-            var firstValue = (DualSenseTouchPointState*)firstStatePtr;
-            var secondValue = (DualSenseTouchPointState*)secondStatePtr;
-
-            // Compare individual fields for changes
-            if (firstValue->touchStatusByte != secondValue->touchStatusByte)
-                return false;
-            if (firstValue->rawX != secondValue->rawX)
-                return false;
-            if (firstValue->rawY != secondValue->rawY)
-                return false;
-            if (firstValue->rawPressure != secondValue->rawPressure)
-                return false;
-
-            return true;
-        }
-
-        public override object ReadValueFromBufferAsObject(void* buffer, int bufferSize)
-        {
-            var state = (DualSenseTouchPointState*)buffer;
-            return new DualSenseTouchPointState
-            {
-                touchStatusByte = state->touchStatusByte,
-                rawX = state->rawX,
-                rawY = state->rawY,
-                rawPressure = state->rawPressure
-            };
-        }
-
-        public override object ReadValueFromStateAsObject(void* statePtr)
-        {
-            var state = (DualSenseTouchPointState*)statePtr;
-            return new DualSenseTouchPointState
-            {
-                touchStatusByte = state->touchStatusByte,
-                rawX = state->rawX,
-                rawY = state->rawY,
-                rawPressure = state->rawPressure
-            };
-        }
-
-        public override void ReadValueFromStateIntoBuffer(void* statePtr, void* bufferPtr, int bufferSize)
-        {
-            if (bufferPtr == null)
-                return;
-
-            var state = (DualSenseTouchPointState*)statePtr;
-            var buffer = (DualSenseTouchPointState*)bufferPtr;
-
-            *buffer = *state;
-            if (bufferSize < Marshal.SizeOf<DualSenseTouchPointState>())
-                return;
-
-            if (bufferSize > Marshal.SizeOf<DualSenseTouchPointState>())
-            {
-                // If the buffer is larger, zero out the rest of it.
-                // This prevents old data from lingering if the new state is smaller.
-                var remainingBytes = bufferSize - Marshal.SizeOf<DualSenseTouchPointState>();
-                var remainingPtr = (byte*)bufferPtr + Marshal.SizeOf<DualSenseTouchPointState>();
-                for (int i = 0; i < remainingBytes; ++i)
-                {
-                    remainingPtr[i] = 0;
-                }
-            }
-        }
-    }
-    /*
-    [StructLayout(LayoutKind.Explicit, Size = 6)]
-    // ❌ REMOVE THIS:
-    // [InputControlLayout(displayName = "DualSense Touch Point")]
-    internal struct DualSenseTouchPoint
-    {
-        [InputControl(name = "touchId", offset = 0, sizeInBits = 7, layout = "Integer", format = "BYTE")]
-        [InputControl(name = "press", offset = 0, sizeInBits = 1, layout = "Button", bit = 7)]
-        [InputControl(name = "x", offset = 1, sizeInBits = 12, layout = "Axis")]
-        [InputControl(name = "y", offset = 2, sizeInBits = 12, layout = "Axis")]
-        [InputControl(name = "time", offset = 4, layout = "Integer", format = "INT")]
-        [FieldOffset(0)] public byte rawIdAndActive;
-        [FieldOffset(1)] public byte xLow;
-        [FieldOffset(2)] public byte xHigh_yLow;
-        [FieldOffset(3)] public byte yHigh;
-        [FieldOffset(4)] public ushort timestamp;
-
-        public bool IsActive => (rawIdAndActive & 0x80) == 0;
-        public int TouchId => rawIdAndActive & 0x7F;
-
-        public int X => (xLow | ((xHigh_yLow & 0x0F) << 8));
-        public int Y => ((xHigh_yLow >> 4) | (yHigh << 4));
-    }*/
-
-    // This struct represents the raw binary data for a single touch point
-    // within the DualSense HID report.
-    // IMPORTANT: The Size and FieldOffset values are examples.
-    // You MUST verify these against the actual DualSense HID report structure.
-    // Example: 8 bytes per touch point
-    [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public struct DualSenseTouchPointState : IInputStateTypeInfo
-    {
-        // A custom FourCC for DualSense touch point data.
-        // This is used internally by the Input System to identify the data format.
-        public FourCC format => new FourCC('D', 'S', 'T', 'P'); // DualSense Touch Point
-
-        // FieldOffset(0) is the start of this touch point's data block.
-
-        // Touch ID and 'Is Pressed' bit (often combined in one byte)
-        // Example: Byte 0 contains touch ID (bits 0-6) and 'isPressed' (bit 7)
-        [FieldOffset(0)]
-        [InputControl(name = "touchId", layout = "Integer", sizeInBits = 7, format = "BYTE")]
-        [InputControl(name = "isPressed", layout = "Button", bit = 8)]
-        // Touch ID (0-127)
-        // Is touch active?
-        public byte touchStatusByte;
-
-        // X and Y coordinates (often 12-bit values packed into 2 bytes each)
-        // For simplicity, assuming 16-bit ushorts here. Actual packing might need custom processors.
-        // Example: X coordinate (12 bits) starts at bit 0 of byte 1, Y coordinate (12 bits) starts at bit 4 of byte 2.
-        [FieldOffset(1)]
-        [InputControl(name = "position", layout = "Vector2", format = "VC2")] // Will be mapped to a Vector2Control
-        [InputControl(name = "position/x", sizeInBits = 8, layout = "Axis", format = "SHRT")]
-        [InputControl(name = "position/y", sizeInBits = 8, layout = "Axis", format = "SHRT")]
-        public ushort rawX; // Raw 12-bit X value (packed into 16-bit ushort)
-        [FieldOffset(2)] // Assuming rawX and rawY are consecutive in the report
-        public ushort rawY; // Raw 12-bit Y value (packed into 16-bit ushort)
-
-        // Pressure value (often 1 byte)
-        [FieldOffset(3)] // Example offset
-        [InputControl(name = "pressure", layout = "Axis", format = "BYTE")]
-        public byte rawPressure;
-
-        // Note: If X/Y are packed into fewer bytes or use different bit offsets,
-        // you might need custom processors or more granular bit offsets.
-        // For instance, if X is 12 bits and Y is 12 bits, they might span 3 bytes.
-        // E.g., Byte 1 (8 bits of X), Byte 2 (4 bits of X, 4 bits of Y), Byte 3 (8 bits of Y)
-    }
-
-
-    [StructLayout(LayoutKind.Explicit, Size = 78)] // Size 64
-    internal struct DualSenseHIDInputReport : IInputStateTypeInfo
+    [StructLayout(LayoutKind.Explicit, Size = 64)] // Size 64
+    internal unsafe struct DualSenseHIDInputReport : IInputStateTypeInfo
     {
         public FourCC format => new FourCC('H', 'I', 'D');
 
@@ -227,6 +62,8 @@ namespace UniSense.LowLevel
         [FieldOffset(6)] public byte rightTrigger;
 
         // Byte at offset 7 is unmapped in the original HID report for this section.
+        [InputControl(name = "seqNo", format = "BYTE", layout = "Integer", sizeInBits = 8)]
+        [FieldOffset(7)] public byte seqNo;
 
         [InputControl(name = "dpad", format = "BIT", layout = "Dpad", sizeInBits = 4, defaultState = 8)]
         [InputControl(name = "dpad/up", format = "BIT", layout = "DiscreteButton",
@@ -259,6 +96,8 @@ namespace UniSense.LowLevel
         [FieldOffset(10)] public byte buttons3;
 
         // Bytes at offsets 11-15 are unmapped in the original HID report before gyro/accel.
+        [InputControl(name = "unkCounter", format = "UINT", layout = "Integer", sizeInBits = 32)]
+        [FieldOffset(12)] public uint unkCounter;
 
         [InputControl(name = "gyro", format = "VC3S", layout = "Vector3")]
         [InputControl(name = "gyro/x", layout = "Axis", format = "SHRT")]
@@ -276,16 +115,35 @@ namespace UniSense.LowLevel
         [FieldOffset(24)] public short accelY;
         [FieldOffset(26)] public short accelZ;
 
+        [InputControl(name = "sensorTimestamp", format = "INT", layout = "Integer", sizeInBits = 32)]
+        [FieldOffset(28)] public int sensorTimestamp;
+
+        [InputControl(name = "temperature", format = "BYTE", layout = "Integer", sizeInBits = 8)]
+        [FieldOffset(32)] public byte temperature;
+
         // --- Touchpad Input Fields ---
         // These fields are placed in the previously unmapped region of the HID report,
         // specifically bytes 28-47, which aligns with the common DualSense HID report structure.
 
-        [InputControl(name = "touch0", layout = "DualSenseTouchPoint")]
-        [FieldOffset(32)] public DualSenseTouchPointState touch0;
+        //[InputControl(name = "touch0", layout = "DualSenseTouchPoint")]
+        //[FieldOffset(33)] public DualSenseTouchPointState touch0;
 
-        [InputControl(name = "touch1", layout = "DualSenseTouchPoint")]
-        [FieldOffset(40)] public DualSenseTouchPointState touch1;
+        //[InputControl(name = "touch1", layout = "DualSenseTouchPoint")]
+        //[FieldOffset(37)] public DualSenseTouchPointState touch1;
 
+        [FieldOffset(33)]
+        [InputControl(name = "touch0Detection", layout = "Button", format = "BIT", offset = 33, bit = 7, sizeInBits = 1)]
+        [InputControl(name = "touch0Index", layout = "TouchIndexControl", format = "BYTE", offset = 33, bit = 0, sizeInBits = 7)]
+        [InputControl(name = "touch0X", layout = "DS5_TouchXAxisControl", format = "SHRT", offset = 34, sizeInBits = 12, bit = 0)]
+        [InputControl(name = "touch0Y", layout = "DS5_TouchYAxisControl", format = "SHRT", offset = 35, sizeInBits = 12, bit = 4)]
+        public byte touchData0;
+
+        [FieldOffset(37)]
+        [InputControl(name = "touch1Detection", layout = "Button", format = "BIT", offset = 37, bit = 7, sizeInBits = 1)]
+        [InputControl(name = "touch1Index", layout = "TouchIndexControl", format = "BYTE", offset = 37, bit = 0, sizeInBits = 7)]
+        [InputControl(name = "touch1X", layout = "DS5_TouchXAxisControl", format = "SHRT", offset = 38, sizeInBits = 12, bit = 0)]
+        [InputControl(name = "touch1Y", layout = "DS5_TouchYAxisControl", format = "SHRT", offset = 39, sizeInBits = 12, bit = 4)]
+        public byte touchData1;
 
         // --- End Touchpad Input Fields ---
 
@@ -293,15 +151,11 @@ namespace UniSense.LowLevel
         // which aligns with the HID report having other data in this region
         // that might not be explicitly mapped by UniSense.
 
-        [InputControl(name = "batteryCharging", layout = "Button", displayName = "Battery is Charging", bit = 3)]
-        [FieldOffset(54)] public byte batteryInfo1;
-
-        [InputControl(name = "batteryFullyCharged", layout = "Button", displayName = "Battery is Fully Charged",
-            bit = 5)]
-        [InputControl(name = "batteryLevel", layout = "Axis", format = "BIT", displayName = "Battery Level", bit = 0,
-            sizeInBits = 4, parameters = "normalize,normalizeMin=0,normalizeMax=1")]
-        [FieldOffset(55)] public byte batteryInfo2;
+        [InputControl(name = "batteryPercent", layout = "Integer", displayName = "Battery Percent", bit = 0, sizeInBits = 4)]
+        [InputControl(name = "batteryState", format = "BYTE", layout = "Integer", displayName = "Battery State", bit = 4, sizeInBits = 4)]
+        [FieldOffset(52)] public byte batteryInfo1;
 
         // Remaining bytes (56-63) are unmapped but part of the 64-byte report size.
+        [FieldOffset(64)] public byte overflow;
     }
 }

@@ -44,6 +44,16 @@ namespace UniSense
         EffectEx = 0x26,
         Calibrate = 0xFC,
     }
+
+    public enum DualSensePowerState : byte
+    {
+        Discharging         = 0x00, // Use PowerPercent
+        Charging            = 0x01, // Use PowerPercent
+        Complete            = 0x02, // PowerPercent not valid? assume 100%?
+        AbnormalVoltage     = 0x0A, // PowerPercent not valid?
+        AbnormalTemperature = 0x0B, // PowerPercent not valid?
+        ChargingError       = 0x0F, // PowerPercent not valid?
+    }
     
     [StructLayout(LayoutKind.Explicit)]
     public struct DualSenseTriggerState
