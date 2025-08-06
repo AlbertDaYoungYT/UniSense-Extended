@@ -26,8 +26,7 @@ namespace UniSense
 
         public ButtonControl micMuteButton { get; protected set; }
 
-        public DS5_TouchpadControl touch0 { get; protected set; }
-        public DS5_TouchpadControl touch1 { get; protected set; }
+        public DS5_TouchpadControl touchpad { get; protected set; }
 
 
 
@@ -75,6 +74,7 @@ namespace UniSense
             InputSystem.RegisterLayout<DS5_TouchAxisControl>();
 
             InputSystem.RegisterLayout<DS5_TouchpadControl>();
+            InputSystem.RegisterLayout<DS5_TouchControl>();
 
             //InputSystem.RegisterLayout<DualSenseTouchPoint>();
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
@@ -89,9 +89,7 @@ namespace UniSense
         {
             base.FinishSetup();
 
-            touch0 = GetChildControl<DS5_TouchpadControl>("touch0");
-
-            touch1 = GetChildControl<DS5_TouchpadControl>("touch1");
+            touchpad = GetChildControl<DS5_TouchpadControl>("touchpad");
 
             leftTriggerButton = GetChildControl<ButtonControl>("leftTriggerButton");
             rightTriggerButton = GetChildControl<ButtonControl>("rightTriggerButton");

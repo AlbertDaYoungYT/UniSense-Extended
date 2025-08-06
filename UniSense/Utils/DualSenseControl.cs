@@ -293,8 +293,8 @@ namespace UniSense.Utils
     }
 
 
-    [InputControlLayout(displayName = "Touchpad")]
-    public class DS5_TouchpadControl : InputControl<Vector2>
+    [InputControlLayout(displayName = "DualSense Touch")]
+    public class DS5_TouchControl : InputControl<Vector2>
     {
 
         [InputControl(name = "isTouching", displayName = "Is Touching", layout = "DS5_IsTouchingControl", bit = 7, sizeInBits = 1, offset = 0)]
@@ -302,10 +302,64 @@ namespace UniSense.Utils
         [InputControl(name = "index", displayName = "Index", layout = "DS5_TouchIndexControl", bit = 0, sizeInBits = 7, offset = 0)]
         public DS5_TouchIndexControl index { get; private set; }
 
-        [InputControl(name = "touchPoint", displayName = "Touch Point", layout = "DS5_TouchPointControl", offset = 1)]
-        [InputControl(name = "touchPoint/x", layout = "DS5_TouchAxisControl", bit = 0, sizeInBits = 12, offset = 0)]
-        [InputControl(name = "touchPoint/y", layout = "DS5_TouchAxisControl", bit = 4, sizeInBits = 12, offset = 1)]
-        public DS5_TouchPointControl touchPoint { get; private set; }
+        [InputControl(name = "position", displayName = "Touch Point", layout = "DS5_TouchPointControl", offset = 1)]
+        [InputControl(name = "position/x", layout = "DS5_TouchAxisControl", bit = 0, sizeInBits = 12)]
+        [InputControl(name = "position/y", layout = "DS5_TouchAxisControl", bit = 4, sizeInBits = 12)]
+        public DS5_TouchPointControl position { get; private set; }
+
+
+        public override Type valueType => throw new NotImplementedException();
+
+        public override int valueSizeInBytes => throw new NotImplementedException();
+
+        public DS5_TouchControl()
+        {
+            m_StateBlock.format = InputStateBlock.FormatVector2;
+        }
+
+        protected override void FinishSetup()
+        {
+            isTouching = GetChildControl<DS5_IsTouchingControl>("isTouching");
+            index = GetChildControl<DS5_TouchIndexControl>("index");
+
+            position = GetChildControl<DS5_TouchPointControl>("position");
+            base.FinishSetup();
+        }
+
+        public unsafe override Vector2 ReadUnprocessedValueFromState(void* statePtr)
+        {
+            return position.ReadUnprocessedValueFromState(statePtr);
+        }
+
+        public override unsafe void WriteValueIntoState(Vector2 value, void* statePtr)
+        {
+            position.WriteValueIntoState(value, statePtr);
+        }
+        
+    }
+
+
+    [InputControlLayout(displayName = "DualSense Touchpad")]
+    public class DS5_TouchpadControl : InputControl<Vector2>
+    {
+
+        [InputControl(name = "touch0", layout = "DS5_TouchControl", offset = 0)]
+        [InputControl(name = "touch0/isTouching", displayName = "Is Touching", layout = "DS5_IsTouchingControl", offset = 0)]
+        [InputControl(name = "touch0/index", displayName = "Index", layout = "DS5_TouchIndexControl", offset = 0)]
+        [InputControl(name = "touch0/position", displayName = "Touch Point", layout = "DS5_TouchPointControl", offset = 1)]
+        [InputControl(name = "touch0/position/x", layout = "DS5_TouchAxisControl", offset = 0)]
+        [InputControl(name = "touch0/position/y", layout = "DS5_TouchAxisControl", offset = 1)]
+        public DS5_TouchControl touch0 { get; private set; }
+
+        [InputControl(name = "touch1", layout = "DS5_TouchControl", offset = 2)]
+        [InputControl(name = "touch1/isTouching", displayName = "Is Touching", layout = "DS5_IsTouchingControl", offset = 2)]
+        [InputControl(name = "touch1/index", displayName = "Index", layout = "DS5_TouchIndexControl", offset = 2)]
+        [InputControl(name = "touch1/position", displayName = "Touch Point", layout = "DS5_TouchPointControl", offset = 2)]
+        [InputControl(name = "touch1/position/x", layout = "DS5_TouchAxisControl", offset = 1)]
+        [InputControl(name = "touch1/position/y", layout = "DS5_TouchAxisControl", offset = 2)]
+        public DS5_TouchControl touch1 { get; private set; }
+
+
 
 
         public override Type valueType => throw new NotImplementedException();
@@ -319,21 +373,34 @@ namespace UniSense.Utils
 
         protected override void FinishSetup()
         {
-            isTouching = GetChildControl<DS5_IsTouchingControl>("isTouching");
-            index = GetChildControl<DS5_TouchIndexControl>("index");
-
-            touchPoint = GetChildControl<DS5_TouchPointControl>("touchPoint");
+            touch0 = GetChildControl<DS5_TouchControl>("touch0");
+            touch1 = GetChildControl<DS5_TouchControl>("touch1");
             base.FinishSetup();
         }
 
         public unsafe override Vector2 ReadUnprocessedValueFromState(void* statePtr)
         {
-            return touchPoint.ReadUnprocessedValueFromState(statePtr);
+            // For a touchpad control, reading the value typically means getting the primary touch point's position.
+            // If touch0 is active, return its position. Otherwise, return a default (e.g., Vector2.zero).
+            if (touch0 != null && touch0.isTouching.ReadUnprocessedValueFromState(statePtr) > 0.5f)
+            {
+                return touch0.position.ReadUnprocessedValueFromState(statePtr);
+            }
+            return Vector2.zero;
         }
 
         public override unsafe void WriteValueIntoState(Vector2 value, void* statePtr)
         {
-            touchPoint.WriteValueIntoState(value, statePtr);
+            // For a touchpad control, writing the value typically means setting the primary touch point's position.
+            // This might not be a common operation for input reports, but for consistency:
+            if (touch0 != null)
+            {
+                touch0.position.WriteValueIntoState(value, statePtr);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
         
     }

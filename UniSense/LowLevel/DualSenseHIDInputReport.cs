@@ -136,12 +136,12 @@ namespace UniSense.LowLevel
         //[InputControl(name = "touch0Index", layout = "DS5_TouchIndexControl", format = "BYTE", offset = 33, bit = 0, sizeInBits = 7)]
         //[InputControl(name = "touch0X", layout = "DS5_TouchXAxisControl", format = "SHRT", offset = 34, sizeInBits = 12, bit = 0)]
         //[InputControl(name = "touch0Y", layout = "DS5_TouchYAxisControl", format = "SHRT", offset = 35, sizeInBits = 12, bit = 4)]
-        [InputControl(name = "touch0", layout = "DS5_TouchpadControl")]
+        [InputControl(name = "touchpad", layout = "DS5_TouchpadControl")]
         public byte touchData0;
 
-        [FieldOffset(37)]
-        [InputControl(name = "touch1", layout = "DS5_TouchpadControl")]
-        public byte touchData1;
+        //[FieldOffset(37)]
+        //[InputControl(name = "touch1", layout = "DS5_TouchpadControl")]
+        //public byte touchData1;
 
         // --- End Touchpad Input Fields ---
 
