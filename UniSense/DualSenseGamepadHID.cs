@@ -26,15 +26,9 @@ namespace UniSense
 
         public ButtonControl micMuteButton { get; protected set; }
 
-        public IntegerControl touch0Index { get; private set; }
-        public ButtonControl touch0Detection { get; private set; }
-        public IntegerControl touch0X { get; private set; }
-        public IntegerControl touch0Y { get; private set; }
+        public DS5_TouchpadControl touch0 { get; protected set; }
+        public DS5_TouchpadControl touch1 { get; protected set; }
 
-        public IntegerControl touch1Index { get; private set; }
-        public ButtonControl touch1Detection { get; private set; }
-        public IntegerControl touch1X { get; private set; }
-        public IntegerControl touch1Y { get; private set; }
 
 
 
@@ -71,10 +65,17 @@ namespace UniSense
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
-            InputSystem.RegisterLayout<TouchIndexControl>();
             InputSystem.RegisterLayout<ShortControl>();
-            InputSystem.RegisterLayout<DS5_TouchXAxisControl>();
-            InputSystem.RegisterLayout<DS5_TouchYAxisControl>();
+            InputSystem.RegisterLayout<DS5_TouchPointControl>();
+
+            InputSystem.RegisterLayout<DS5_TouchIndexControl>();
+            InputSystem.RegisterLayout<DS5_IsTouchingControl>();
+            //InputSystem.RegisterLayout<DS5_TouchXAxisControl>();
+            //InputSystem.RegisterLayout<DS5_TouchYAxisControl>();
+            InputSystem.RegisterLayout<DS5_TouchAxisControl>();
+
+            InputSystem.RegisterLayout<DS5_TouchpadControl>();
+
             //InputSystem.RegisterLayout<DualSenseTouchPoint>();
             InputSystem.RegisterLayout<DualSenseGamepadHID>(
                 matches: new InputDeviceMatcher()
@@ -88,15 +89,9 @@ namespace UniSense
         {
             base.FinishSetup();
 
-            touch0Index = GetChildControl<IntegerControl>("touch0Index");
-            touch0Detection = GetChildControl<ButtonControl>("touch0Detection");
-            touch0X = GetChildControl<IntegerControl>("touch0X");
-            touch0Y = GetChildControl<IntegerControl>("touch0Y");
+            touch0 = GetChildControl<DS5_TouchpadControl>("touch0");
 
-            touch1Index = GetChildControl<IntegerControl>("touch1Index");
-            touch1Detection = GetChildControl<ButtonControl>("touch1Detection");
-            touch1X = GetChildControl<IntegerControl>("touch1X");
-            touch1Y = GetChildControl<IntegerControl>("touch1Y");
+            touch1 = GetChildControl<DS5_TouchpadControl>("touch1");
 
             leftTriggerButton = GetChildControl<ButtonControl>("leftTriggerButton");
             rightTriggerButton = GetChildControl<ButtonControl>("rightTriggerButton");

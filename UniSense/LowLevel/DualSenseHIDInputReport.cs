@@ -132,17 +132,15 @@ namespace UniSense.LowLevel
         //[FieldOffset(37)] public DualSenseTouchPointState touch1;
 
         [FieldOffset(33)]
-        [InputControl(name = "touch0Detection", layout = "Button", format = "BIT", offset = 33, bit = 7, sizeInBits = 1)]
-        [InputControl(name = "touch0Index", layout = "TouchIndexControl", format = "BYTE", offset = 33, bit = 0, sizeInBits = 7)]
-        [InputControl(name = "touch0X", layout = "DS5_TouchXAxisControl", format = "SHRT", offset = 34, sizeInBits = 12, bit = 0)]
-        [InputControl(name = "touch0Y", layout = "DS5_TouchYAxisControl", format = "SHRT", offset = 35, sizeInBits = 12, bit = 4)]
+        //[InputControl(name = "touch0Detection", layout = "DS5_IsTouchingControl", format = "BIT", offset = 33, bit = 7, sizeInBits = 1)]
+        //[InputControl(name = "touch0Index", layout = "DS5_TouchIndexControl", format = "BYTE", offset = 33, bit = 0, sizeInBits = 7)]
+        //[InputControl(name = "touch0X", layout = "DS5_TouchXAxisControl", format = "SHRT", offset = 34, sizeInBits = 12, bit = 0)]
+        //[InputControl(name = "touch0Y", layout = "DS5_TouchYAxisControl", format = "SHRT", offset = 35, sizeInBits = 12, bit = 4)]
+        [InputControl(name = "touch0", layout = "DS5_TouchpadControl")]
         public byte touchData0;
 
         [FieldOffset(37)]
-        [InputControl(name = "touch1Detection", layout = "Button", format = "BIT", offset = 37, bit = 7, sizeInBits = 1)]
-        [InputControl(name = "touch1Index", layout = "TouchIndexControl", format = "BYTE", offset = 37, bit = 0, sizeInBits = 7)]
-        [InputControl(name = "touch1X", layout = "DS5_TouchXAxisControl", format = "SHRT", offset = 38, sizeInBits = 12, bit = 0)]
-        [InputControl(name = "touch1Y", layout = "DS5_TouchYAxisControl", format = "SHRT", offset = 39, sizeInBits = 12, bit = 4)]
+        [InputControl(name = "touch1", layout = "DS5_TouchpadControl")]
         public byte touchData1;
 
         // --- End Touchpad Input Fields ---
