@@ -13,10 +13,10 @@ This project is incomplete state for now. For example:
 
 ## Roadmap
 
-[ ] Getting stable support for all DualSense Inputs.
-[ ] Getting stable support for sending data to the DualSense.
-[ ] Getting stable support for Linux.
-[ ] Working on more complex communication with the controller (eg. Audio and Hardware specific data)
+- [ ] Getting stable support for all DualSense Inputs.
+- [ ] Getting stable support for sending data to the DualSense.
+- [ ] Getting stable support for Linux.
+- [ ] Working on more complex communication with the controller (eg. Audio and Hardware specific data)
 
 
 ## Current Features
